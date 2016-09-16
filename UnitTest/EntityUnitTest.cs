@@ -6,6 +6,7 @@ using System.Data.Entity.Validation;
 using EntityCore.DynamicEntity;
 using EntityCore.Proxy.Metadata;
 using System.Collections.Generic;
+using EntityCore.Entity;
 
 namespace UnitTest
 {
@@ -119,9 +120,9 @@ namespace UnitTest
             IAttributeType stringType = entityContext.SetAs<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.String").Single();
             IAttributeType intType = entityContext.SetAs<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.Int32").Single();
 
-            ICollection<EntityCore.Proxy.IBaseEntity> a = new HashSet<AttributeTest>();
-            ICollection<EntityCore.Proxy.Metadata.IAttribute> b = a as ICollection<EntityCore.Proxy.Metadata.IAttribute>;
-            
+            /*ICollection<EntityCore.Proxy.IBaseEntity> a = new HashSet<AttributeTest>();
+            ICollection<EntityCore.Proxy.Metadata.IAttribute> b = a as ICollection<EntityCore.Proxy.Metadata.IAttribute>;*/
+
             /*
             IEntity userEntity = entityContext.Create<IEntity>("Entity");
             userEntity.Name = "User";
@@ -172,7 +173,7 @@ namespace UnitTest
         [TestMethod]
         public void CreateUsers()
         {
-            EventDynamicEntityContext context = new EventDynamicEntityContext(new MetadataContext("name=DataDbContext"), "name=DataDbContext");
+            DynamicEntityContext context = new DynamicEntityContext("name=DataDbContext");
             //EntityContext context = new EntityContext("name=DataDbContext");
 
             BaseEntity xm = context.Create("User");
@@ -197,7 +198,7 @@ namespace UnitTest
         [TestMethod]
         public void LoadUsers()
         {
-            EventDynamicEntityContext context = new EventDynamicEntityContext(new MetadataContext("name=DataDbContext"), "name=DataDbContext");
+            DynamicEntityContext context = new DynamicEntityContext("name=DataDbContext");
 
             var usersSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUserFirstName>;
             var xavierFirstName = usersSet.Where(u => u.Firstname == "Xavier").Single();

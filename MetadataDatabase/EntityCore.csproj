@@ -83,7 +83,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <None Include="UML\DynamicEntity.cd" />
     <None Include="packages.config" />
   </ItemGroup>

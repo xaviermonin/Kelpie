@@ -18,10 +18,10 @@ namespace Experience
                 Dimension = 10
             });
 
-            context.Voitures.Add(voiture as Voiture);
-            context.SaveChanges();
-
-            IVoiture cBon = context.Voitures.Where(c => c.Name == "208").Single();
+            /*context.Voitures.Add(voiture as Voiture);
+            context.SaveChanges();*/
+            
+            IVoiture cBon = (context.Voitures as IEnumerable<IVoiture>).Where(c => c.Name == "208").Single();
         }
     }
 }
