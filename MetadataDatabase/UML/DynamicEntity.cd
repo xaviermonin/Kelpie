@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EntityCore.DynamicEntity.DynamicEntityContext">
+    <Position X="6" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAEAAAAAAABIAAAABAAAgAUIAAEEAAAAAEAAEAAAA=</HashCode>
+      <FileName>DynamicEntity\DynamicEntityContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityCore.DynamicEntity.EntityDatabaseStructure">
+    <Position X="2" Y="6.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DynamicEntity\DatabaseStructure\EntityDatabaseStructure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityCore.DynamicEntity.EntityFactory">
+    <Position X="4.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BiAMAECAAAAAAAAACAAAUBgAAAAAAAQAgAIAAAAAAgQ=</HashCode>
+      <FileName>DynamicEntity\EntityFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityCore.DynamicEntity.Event.EventDispatcher">
+    <Position X="9.5" Y="3" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="EntityCore.DynamicEntity.Event.EventDispatcher.EntityEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Entity\Event\EventDispatcher.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAAQAAA=</HashCode>
+      <FileName>Entity\Event\EventDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityCore.Entity.BaseEntity" Collapsed="true">
+    <Position X="4.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAQAAIBBAAAAAAAEAAAAAAAAAAIAAAAE=</HashCode>
+      <FileName>Entity\BaseEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="EntityCore.Entity.BaseEntityContext">
+    <Position X="7.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\BaseEntityContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityCore.MetadataContext">
+    <Position X="9.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAgQAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Initialization\Metadata\MetadataContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EntityCore.Initialization.Metadata.MetadataInitializer">
+    <Position X="11.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACMAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Initialization\Metadata\MetadataInitializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EntityCore.DynamicEntity.Event.IEntityListener">
+    <Position X="11.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAABAAAAAAIAAEAAAAAAEAAEAAIA=</HashCode>
+      <FileName>Entity\Event\IEntityListener.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="EntityCore.Proxy.IBaseEntity">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
