@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EntityCore.Proxy.Metadata
 {
-    public interface IInterface : IBaseEntity
+    public interface IProxy : IBaseEntity
     {
         IEntity Entity { get; set; }
 

@@ -43,7 +43,7 @@
     <Compile Include="Metadata\IAttribute.cs" />
     <Compile Include="Metadata\IAttributeType.cs" />
     <Compile Include="Metadata\IEntity.cs" />
-    <Compile Include="Metadata\IInterface.cs" />
+    <Compile Include="Metadata\IProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

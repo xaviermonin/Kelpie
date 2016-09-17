@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 
 namespace EntityCore.DynamicEntity
@@ -142,9 +143,9 @@ namespace EntityCore.DynamicEntity
             return Set(_tables[entityName]);
         }
 
-        public IQueryable<T> SetAs<T>(string entityName) where T : IBaseEntity
+        public EntityDbSet<T> ProxySet<T>(string entityName) where T : class, IBaseEntity
         {
-            return Set(_tables[entityName]) as IQueryable<T>;
+            return new EntityDbSet<T>(Set(_tables[entityName]));
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -4,11 +4,11 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.Initialization.Metadata
 {
-    internal class MetadataInitializer : CreateDatabaseIfNotExists<MetadataContext>
+    internal class MetadataInitializer : DropCreateDatabaseAlways<MetadataContext>
     {
         protected List<Models.AttributeType> attributesTypes = new List<Models.AttributeType>();
         protected List<Models.Entity> entities = new List<Models.Entity>();
-        protected List<Models.Interface> interfaces = new List<Models.Interface>();
+        protected List<Models.Proxy> interfaces = new List<Models.Proxy>();
 
         public MetadataInitializer()
         {
@@ -26,7 +26,7 @@ namespace EntityCore.Initialization.Metadata
 
             attributesTypes.Add(boolType = new Models.AttributeType()
             {
-                ClrName = "System.Bool",
+                ClrName = "System.Boolean",
                 SqlServerName = "bit"
             });
 
@@ -55,6 +55,7 @@ namespace EntityCore.Initialization.Metadata
             // Entity
 
             Models.Entity entityEntity = null;
+            Models.Entity attributeTypeEntity = null;
 
             entities.Add(entityEntity = new Models.Entity()
             {
@@ -141,7 +142,7 @@ namespace EntityCore.Initialization.Metadata
 
             // AttributeType
 
-            entities.Add(new Models.Entity()
+            entities.Add(attributeTypeEntity = new Models.Entity()
             {
                 Name = "AttributeType",
                 Description = "Describe an attribute type",
@@ -203,14 +204,25 @@ namespace EntityCore.Initialization.Metadata
 
             #endregion
 
+            #region Proxies
+
+            interfaces.Add(new Models.Proxy()
+            {
+                Entity = attributeTypeEntity,
+                Managed = true,
+                FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IAttributeType).AssemblyQualifiedName
+            });
+
+            #endregion
+
             #region Behaviors
 
-            interfaces.Add(new Models.Interface()
+            /*interfaces.Add(new Models.Interface()
             {
                 Entity = entityEntity,
                 Managed = true,
                 FullyQualifiedTypeName = typeof(EntityCore.DynamicEntity.Behavior.EntityToSqlStructure).AssemblyQualifiedName,
-            });
+            });*/
 
             #endregion
         }

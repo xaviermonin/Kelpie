@@ -52,13 +52,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicEntity\Behavior\EntityToSqlStructure.cs" />
+    <Compile Include="DynamicEntity\EntityDbSet.cs" />
     <Compile Include="DynamicEntity\EntityTypeCache.cs" />
     <Compile Include="Entity\Event\EventDispatcher.cs" />
     <Compile Include="Entity\Event\IEntityListener.cs" />
     <Compile Include="Entity\BaseEntityContext.cs" />
     <Compile Include="Initialization\Metadata\Models\Relationship.cs" />
     <Compile Include="Initialization\Metadata\Models\EntityRelationship.cs" />
-    <Compile Include="Initialization\Metadata\Models\Interface.cs" />
+    <Compile Include="Initialization\Metadata\Models\Proxy.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="DynamicEntity\DynamicEntityContext.cs" />
     <Compile Include="DynamicEntity\DatabaseStructure\EntityDatabaseStructure.cs" />

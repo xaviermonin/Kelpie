@@ -23,6 +23,6 @@ namespace EntityCore.Proxy.Metadata
         }
 
         ICollection<IAttribute> Attributes { get; set; }
-        ICollection<IInterface> Interfaces { get; set; }
+        ICollection<IProxy> Interfaces { get; set; }
     }
 }

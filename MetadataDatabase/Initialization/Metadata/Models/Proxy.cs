@@ -2,7 +2,7 @@
 
 namespace EntityCore.Initialization.Metadata.Models
 {
-    internal class Interface : BaseEntity
+    internal class Proxy : BaseEntity
     {
         public Entity Entity { get; set; }
 

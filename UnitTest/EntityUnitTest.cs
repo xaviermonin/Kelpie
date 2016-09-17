@@ -7,6 +7,7 @@ using EntityCore.DynamicEntity;
 using EntityCore.Proxy.Metadata;
 using System.Collections.Generic;
 using EntityCore.Entity;
+using System.Data.Entity;
 
 namespace UnitTest
 {
@@ -116,9 +117,10 @@ namespace UnitTest
         public void CreateEntity()
         {
             DynamicEntityContext entityContext = new DynamicEntityContext("name=DataDbContext");
+            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.String").Single();
+            IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.Int32").Single();
 
-            IAttributeType stringType = entityContext.SetAs<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.String").Single();
-            IAttributeType intType = entityContext.SetAs<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.Int32").Single();
+            var id = stringType.Id;
 
             /*ICollection<EntityCore.Proxy.IBaseEntity> a = new HashSet<AttributeTest>();
             ICollection<EntityCore.Proxy.Metadata.IAttribute> b = a as ICollection<EntityCore.Proxy.Metadata.IAttribute>;*/
