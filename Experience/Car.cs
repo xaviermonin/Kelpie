@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Experience
 {
-    class Voiture : IVoiture
+    class Car : ICar
     {
-        public Voiture()
+        public Car()
         {
-            this.Roues = new HashSet<Roue>();
+            this.Roues = new HashSet<Wheel>();
         }
 
         [Key]
@@ -20,16 +20,16 @@ namespace Experience
 
         public string Name { get; set; }
 
-        public ICollection<Roue> Roues { get; private set; }
+        public ICollection<Wheel> Roues { get; private set; }
 
-        private BindingCollection<Roue, IRoue> bindingCollectionRoues;
+        private BindingCollection<Wheel, IWheel> bindingCollectionRoues;
 
         [NotMapped]
-        ICollection<IRoue> IVoiture.Roues
+        ICollection<IWheel> ICar.Roues
         {
             get {
                 if (bindingCollectionRoues == null)
-                    bindingCollectionRoues = new BindingCollection<Roue, IRoue>(this.Roues);
+                    bindingCollectionRoues = new BindingCollection<Wheel, IWheel>(this.Roues);
 
                 return bindingCollectionRoues;
             }

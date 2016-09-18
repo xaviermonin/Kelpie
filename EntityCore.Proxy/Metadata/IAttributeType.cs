@@ -17,12 +17,12 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        /*Nullable<short> DefaultLength
+        Nullable<int> DefaultLength
         {
             get;
             set;
         }
 
-        ICollection<IAttribute> Attributes { get; set; }*/
+        ICollection<IAttribute> Attributes { get; set; }
     }
 }

@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace Experience
 {
-    class Roue : IRoue
+    class Wheel : IWheel
     {
         [Key]
         public int Id { get; set; }
 
         public int Dimension { get; set; }
 
-        public Voiture Proprietaire { get; set; }
+        public Car Proprietaire { get; set; }
 
         [NotMapped]
-        IVoiture IRoue.Proprietaire
+        ICar IWheel.Proprietaire
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Experience
             }
             set
             {
-                Proprietaire = value as Voiture;
+                Proprietaire = value as Car;
             }
         }
     }

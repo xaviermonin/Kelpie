@@ -8,7 +8,7 @@ namespace EntityCore.Initialization.Metadata
     {
         protected List<Models.AttributeType> attributesTypes = new List<Models.AttributeType>();
         protected List<Models.Entity> entities = new List<Models.Entity>();
-        protected List<Models.Proxy> interfaces = new List<Models.Proxy>();
+        protected List<Models.Proxy> proxies = new List<Models.Proxy>();
 
         public MetadataInitializer()
         {
@@ -175,38 +175,38 @@ namespace EntityCore.Initialization.Metadata
                 }
             });
 
-            // Interface
+            // Proxy
 
             entities.Add(new Models.Entity()
-            {
-                Name = "Interface",
-                Description = "Describe an interface",
-                Attributes =
                 {
-                    new Models.Attribute()
+                    Name = "Proxy",
+                    Description = "Describe a proxy",
+                    Attributes =
                     {
-                        Name = "FullyQualfiedTypeName",
-                        IsNullable = true,
-                        Type = stringType,
-                        Managed = true,
-                        Metadata = true,
-                    },
-                    new Models.Attribute()
-                    {
-                        Name = "Managed",
-                        IsNullable = true,
-                        Type = boolType,
-                        Managed = true,
-                        Metadata = true,
-                    },
-                }
-            });
+                        new Models.Attribute()
+                        {
+                            Name = "FullyQualfiedTypeName",
+                            IsNullable = true,
+                            Type = stringType,
+                            Managed = true,
+                            Metadata = true,
+                        },
+                        new Models.Attribute()
+                        {
+                            Name = "Managed",
+                            IsNullable = true,
+                            Type = boolType,
+                            Managed = true,
+                            Metadata = true,
+                        },
+                    }
+                });
 
             #endregion
 
             #region Proxies
 
-            interfaces.Add(new Models.Proxy()
+            proxies.Add(new Models.Proxy()
             {
                 Entity = attributeTypeEntity,
                 Managed = true,
@@ -217,7 +217,7 @@ namespace EntityCore.Initialization.Metadata
 
             #region Behaviors
 
-            /*interfaces.Add(new Models.Interface()
+            /*businessLogics.Add(new Models.BusinessLogic()
             {
                 Entity = entityEntity,
                 Managed = true,
@@ -231,7 +231,7 @@ namespace EntityCore.Initialization.Metadata
         {
             context.AttributeTypes.AddRange(attributesTypes);
             context.Entities.AddRange(entities);
-            context.Interfaces.AddRange(interfaces);
+            context.Interfaces.AddRange(proxies);
 
             context.SaveChanges();
 

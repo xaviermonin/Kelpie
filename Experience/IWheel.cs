@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Experience
 {
-    public interface IVoiture
+    public interface IWheel
     {
         int Id { get; set; }
 
-        string Name { get; set; }
+        int Dimension { get; set; }
 
-        ICollection<IRoue> Roues { get; }
+        ICar Proprietaire { get; set; }
     }
 }

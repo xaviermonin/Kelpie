@@ -49,10 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingCollection.cs" />
-    <Compile Include="IRoue.cs" />
-    <Compile Include="IVoiture.cs" />
-    <Compile Include="Roue.cs" />
-    <Compile Include="Voiture.cs" />
+    <Compile Include="IWheel.cs" />
+    <Compile Include="ICar.cs" />
+    <Compile Include="Wheel.cs" />
+    <Compile Include="Car.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

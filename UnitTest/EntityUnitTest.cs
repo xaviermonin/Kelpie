@@ -22,94 +22,6 @@ namespace UnitTest
         string Lastname { get; set; }
     }
 
-    class AttributeTest : EntityCore.Entity.BaseEntity, IAttribute
-    {
-
-        public string Name
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool IsNullable
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public string DefaultValue
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public int? Length
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool Managed
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IAttributeType Type
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public IEntity Entity
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-    }
-
     [TestClass]
     public class EntityUnitTest
     {
@@ -117,9 +29,9 @@ namespace UnitTest
         public void CreateEntity()
         {
             DynamicEntityContext entityContext = new DynamicEntityContext("name=DataDbContext");
-            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.String").Single();
+            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").Include(c => c.Attributes).Where(c => c.ClrName == "System.String").Single();
             IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.Int32").Single();
-
+            
             var id = stringType.Id;
 
             /*ICollection<EntityCore.Proxy.IBaseEntity> a = new HashSet<AttributeTest>();

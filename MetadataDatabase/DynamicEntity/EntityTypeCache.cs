@@ -30,7 +30,7 @@ namespace EntityCore.DynamicEntity
             {
                 EntityFactory entityFactory = new EntityFactory();
 
-                foreach (var entity in context.Entities.Include(c => c.Attributes).Include(c => c.Interfaces).Include("Attributes.Type"))
+                foreach (var entity in context.Entities.Include(c => c.Attributes).Include(c => c.Proxies).Include("Attributes.Type"))
                     yield return entityFactory.CreateDynamicType<BaseEntity>(entity);
             }
         }

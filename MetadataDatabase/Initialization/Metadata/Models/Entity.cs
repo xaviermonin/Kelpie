@@ -9,7 +9,7 @@ namespace EntityCore.Initialization.Metadata.Models
         public Entity()
         {
             this.Attributes = new HashSet<Attribute>();
-            this.Interfaces = new HashSet<Proxy>();
+            this.Proxies = new HashSet<Proxy>();
         }
 
         private string _name;
@@ -41,6 +41,6 @@ namespace EntityCore.Initialization.Metadata.Models
         }
 
         public virtual ICollection<Attribute> Attributes { get; set; }
-        public virtual ICollection<Proxy> Interfaces { get; set; }
+        public virtual ICollection<Proxy> Proxies { get; set; }
     }
 }

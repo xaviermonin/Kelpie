@@ -15,7 +15,7 @@ namespace Experience
             Database.SetInitializer(new CreateDatabaseIfNotExists<Context>());
         }
 
-        public DbSet<Roue> Roues { get; set; }
-        public DbSet<Voiture> Voitures { get; set; }
+        public DbSet<Wheel> Roues { get; set; }
+        public DbSet<Car> Voitures { get; set; }
     }
 }

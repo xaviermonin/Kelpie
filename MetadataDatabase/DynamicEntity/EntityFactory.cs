@@ -21,7 +21,7 @@ namespace EntityCore.DynamicEntity
         private readonly MethodInfo setPropertyMethod;
 
         public EntityFactory()
-            : this("Entity.Objects")
+            : this("EntityCore.DynamicEntity.Objects")
         {
 
         }
@@ -65,7 +65,7 @@ namespace EntityCore.DynamicEntity
             if (_moduleBuilder == null)
                 _moduleBuilder = _assemblyBuilder.DefineDynamicModule(_assemblyName + ".dll");
 
-            Type[] interfaces = entity.Interfaces.Select(i => Type.GetType(i.FullyQualifiedTypeName)).ToArray();
+            Type[] proxies = entity.Proxies.Select(i => Type.GetType(i.FullyQualifiedTypeName)).ToArray();
 
             //typeof(T) is for the base class, can be omitted if not needed
             _typeBuilder = _moduleBuilder.DefineType(_assemblyName + "." + entity.Name, TypeAttributes.Public
@@ -73,7 +73,7 @@ namespace EntityCore.DynamicEntity
                                                             | TypeAttributes.AutoClass
                                                             | TypeAttributes.AnsiClass
                                                             | TypeAttributes.Serializable
-                                                            | TypeAttributes.BeforeFieldInit, typeof(T), interfaces);
+                                                            | TypeAttributes.BeforeFieldInit, typeof(T), proxies);
 
             //various class based attributes for WCF and EF
             AddDataContractAttribute();
