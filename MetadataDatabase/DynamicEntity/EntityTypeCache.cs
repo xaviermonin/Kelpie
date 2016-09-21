@@ -1,32 +1,35 @@
-﻿using EntityCore.Entity;
+﻿using EntityCore.DynamicEntity.Factory;
+using EntityCore.Entity;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EntityCore.DynamicEntity
 {
-    class EntityTypeCache
+    static class EntityTypeCache
     {
         static private Dictionary<string, IEnumerable<Type>> typesByDatabase = new Dictionary<string, IEnumerable<Type>>();
 
-        static public IEnumerable<Type> GetEntitiesTypes(string connectionString)
+        static public IEnumerable<Type> GetEntitiesTypes(string nameOrConnectionString)
         {
-            if (typesByDatabase.ContainsKey(connectionString))
-                return typesByDatabase[connectionString];
+            if (typesByDatabase.ContainsKey(nameOrConnectionString))
+                return typesByDatabase[nameOrConnectionString];
 
-            var entitiesTypes = CreateEntitiesTypes(connectionString);
-            typesByDatabase.Add(connectionString, entitiesTypes);
+            var entitiesTypes = CreateEntitiesTypes(nameOrConnectionString);
+            typesByDatabase.Add(nameOrConnectionString, entitiesTypes);
 
             return entitiesTypes;
         }
 
-        static IEnumerable<Type> CreateEntitiesTypes(string connectionString)
+        static public Type GetEntityType(string nameOrConnectionString, string entityName)
         {
-            using (MetadataContext context = new MetadataContext(connectionString))
+            return GetEntitiesTypes(nameOrConnectionString).Where(e => e.Name == entityName).Single();
+        }
+
+        static IEnumerable<Type> CreateEntitiesTypes(string nameOrConnectionString)
+        {
+            using (MetadataContext context = new MetadataContext(nameOrConnectionString))
             {
                 EntityFactory entityFactory = new EntityFactory();
 
