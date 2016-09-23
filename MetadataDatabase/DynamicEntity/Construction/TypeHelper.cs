@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -69,6 +71,44 @@ namespace EntityCore.DynamicEntity.Construction
 
             // Report whether TypeToTest is a form of the Nullable<> type
             return typeToTest.IsGenericType && typeToTest.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        static public void CreatePropertyForType(TypeBuilder typeBuilder, string fieldName, Type fieldType)
+        {
+            FieldBuilder fieldBuilder = typeBuilder.DefineField("_" + fieldName.ToLowerInvariant(), fieldType, FieldAttributes.Private);
+
+            PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(fieldName, PropertyAttributes.HasDefault, fieldType, null);
+
+            MethodAttributes getterAndSetterAttributes = MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Virtual;
+
+            //creates the Get Method for the property
+            propertyBuilder.SetGetMethod(CreateGetMethod(typeBuilder, getterAndSetterAttributes, fieldName, fieldType, fieldBuilder));
+            //creates the Set Method for the property and also adds the invocation of the property change
+            propertyBuilder.SetSetMethod(CreateSetMethod(typeBuilder, getterAndSetterAttributes, fieldName, fieldType, fieldBuilder));
+        }
+
+        static public MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, MethodAttributes attr, string name, Type type, FieldBuilder fieldBuilder)
+        {
+            var getMethodBuilder = typeBuilder.DefineMethod("get_" + name, attr, type, Type.EmptyTypes);
+
+            var getMethodILGenerator = getMethodBuilder.GetILGenerator();
+            getMethodILGenerator.Emit(OpCodes.Ldarg_0);
+            getMethodILGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
+            getMethodILGenerator.Emit(OpCodes.Ret);
+
+            return getMethodBuilder;
+        }
+
+        static public MethodBuilder CreateSetMethod(TypeBuilder typeBuilder, MethodAttributes attr, string name, Type type, FieldBuilder fieldBuilder)
+        {
+            var methodBuilder = typeBuilder.DefineMethod("set" + name, attr, null, new[] { type });
+            var generator = methodBuilder.GetILGenerator();
+            generator.Emit(OpCodes.Ldarg_0);
+            generator.Emit(OpCodes.Ldarg_1);
+            generator.Emit(OpCodes.Stfld, fieldBuilder);
+            generator.Emit(OpCodes.Ret);
+
+            return methodBuilder;
         }
     }
 }
