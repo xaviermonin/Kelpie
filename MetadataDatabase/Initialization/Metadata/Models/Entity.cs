@@ -10,6 +10,8 @@ namespace EntityCore.Initialization.Metadata.Models
         {
             this.Attributes = new HashSet<Attribute>();
             this.Proxies = new HashSet<Proxy>();
+            this.OneToManyRelationships = new HashSet<Relationship>();
+            this.ManyToOneRelationships = new HashSet<Relationship>();
         }
 
         private string _name;
@@ -40,7 +42,18 @@ namespace EntityCore.Initialization.Metadata.Models
             set { SetProperty(ref _metadata, value); }
         }
 
+        private bool _isAssociation;
+        public bool IsAssociation
+        {
+            get { return _isAssociation; }
+            set { SetProperty(ref _isAssociation, value); }
+        }
+
         public virtual ICollection<Attribute> Attributes { get; set; }
+
+        public virtual ICollection<Relationship> OneToManyRelationships { get; set; }
+        public virtual ICollection<Relationship> ManyToOneRelationships { get; set; }
+
         public virtual ICollection<Proxy> Proxies { get; set; }
     }
 }

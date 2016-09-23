@@ -49,8 +49,8 @@ namespace EntityCore.Initialization.Metadata.Models
         private bool _metadata;
         public bool Metadata
         {
-            get { return _managed; }
-            set { SetProperty(ref _managed, value); }
+            get { return _metadata; }
+            set { SetProperty(ref _metadata, value); }
         }
 
         public virtual AttributeType Type { get; set; }

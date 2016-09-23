@@ -1,5 +1,6 @@
 ﻿using EntityCore.Entity;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EntityCore.Initialization.Metadata.Models
 {
@@ -25,13 +26,6 @@ namespace EntityCore.Initialization.Metadata.Models
             set { SetProperty(ref _description, value); }
         }
 
-        private int _relationshipType;
-        public int RelationshipType
-        {
-            get { return _relationshipType; }
-            set { SetProperty(ref _relationshipType, value); }
-        }
-
         private int _cascadeDelete;
         public int CascadeDelete
         {
@@ -53,7 +47,23 @@ namespace EntityCore.Initialization.Metadata.Models
             set { SetProperty(ref _metadata, value); }
         }
 
-        public virtual EntityRelationship ReferencedEntity { get; set; }
-        public virtual EntityRelationship ReferencingEntity { get; set; }
+        private string _oneNavigationName;
+        public string OneNavigationName
+        {
+            get { return _oneNavigationName; }
+            set { SetProperty(ref _oneNavigationName, value); }
+        }
+
+        private string _manyNavigationName;
+        public string ManyNavigationName
+        {
+            get { return _manyNavigationName; }
+            set { SetProperty(ref _manyNavigationName, value); }
+        }
+
+        [InverseProperty("OneToManyRelationships")]
+        public virtual Entity One { get; set; }
+        [InverseProperty("ManyToOneRelationships")]
+        public virtual Entity Many { get; set; }
     }
 }

@@ -52,18 +52,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicEntity\Behavior\EntityToSqlStructure.cs" />
+    <Compile Include="DynamicEntity\Construction\TypeHelper.cs" />
     <Compile Include="DynamicEntity\EntityDbSet.cs" />
     <Compile Include="DynamicEntity\EntityTypeCache.cs" />
+    <Compile Include="DynamicEntity\Construction\DynamicAssemblyBuilder.cs" />
+    <Compile Include="DynamicEntity\Construction\NavigationPropertyBuilder.cs" />
+    <Compile Include="DynamicEntity\Construction\PropertyBuilder.cs" />
     <Compile Include="Entity\Event\EventDispatcher.cs" />
     <Compile Include="Entity\Event\IEntityListener.cs" />
     <Compile Include="Entity\BaseEntityContext.cs" />
     <Compile Include="Initialization\Metadata\Models\Relationship.cs" />
-    <Compile Include="Initialization\Metadata\Models\EntityRelationship.cs" />
     <Compile Include="Initialization\Metadata\Models\Proxy.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="DynamicEntity\DynamicEntityContext.cs" />
     <Compile Include="DynamicEntity\DatabaseStructure\EntityDatabaseStructure.cs" />
-    <Compile Include="DynamicEntity\EntityFactory.cs" />
+    <Compile Include="DynamicEntity\Construction\EntityBuilder.cs" />
     <Compile Include="Initialization\Metadata\MetadataContext.cs" />
     <Compile Include="Initialization\Metadata\MetadataInitializer.cs" />
     <Compile Include="Initialization\Metadata\Models\Attribute.cs" />

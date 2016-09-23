@@ -56,6 +56,7 @@ namespace EntityCore.Initialization.Metadata
 
             Models.Entity entityEntity = null;
             Models.Entity attributeTypeEntity = null;
+            Models.Entity attributeEntity = null;
 
             entities.Add(entityEntity = new Models.Entity()
             {
@@ -89,7 +90,7 @@ namespace EntityCore.Initialization.Metadata
 
             // Attribute
 
-            entities.Add(new Models.Entity()
+            entities.Add(attributeEntity = new Models.Entity()
             {
                 Name = "Attribute",
                 Description = "Describe an entity attribute",
@@ -138,6 +139,15 @@ namespace EntityCore.Initialization.Metadata
                         Metadata = true,
                     },
                 }
+            });
+
+            attributeEntity.ManyToOneRelationships.Add(new Models.Relationship()
+            {
+                Name = "Attributes",
+                One = entityEntity,
+                OneNavigationName = "Entity",
+                Many = attributeEntity,
+                ManyNavigationName = "Attributes"
             });
 
             // AttributeType

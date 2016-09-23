@@ -1,11 +1,10 @@
-﻿using EntityCore.Entity;
+﻿using EntityCore.DynamicEntity.Construction;
+using EntityCore.Entity;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.Entity;
+using System.Reflection.Emit;
 
 namespace EntityCore.DynamicEntity
 {
@@ -28,10 +27,15 @@ namespace EntityCore.DynamicEntity
         {
             using (MetadataContext context = new MetadataContext(connectionString))
             {
-                EntityFactory entityFactory = new EntityFactory();
+                DynamicAssemblyBuilder assemblyBuilder = new DynamicAssemblyBuilder();
 
-                foreach (var entity in context.Entities.Include(c => c.Attributes).Include(c => c.Proxies).Include("Attributes.Type"))
-                    yield return entityFactory.CreateDynamicType<BaseEntity>(entity);
+                var entities = context.Entities.Include(c => c.Attributes)
+                                               .Include(c => c.Proxies)
+                                               .Include("Attributes.Type")
+                                               .Include(c => c.ManyToOneRelationships)
+                                               .Include(c => c.OneToManyRelationships).ToArray();
+
+                return assemblyBuilder.BuildTypes(entities);
             }
         }
     }
