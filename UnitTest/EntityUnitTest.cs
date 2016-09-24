@@ -31,7 +31,9 @@ namespace UnitTest
             DynamicEntityContext entityContext = new DynamicEntityContext("name=DataDbContext");
             IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").Include(c => c.Attributes).Where(c => c.ClrName == "System.String").Single();
             IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.Int32").Single();
-            
+
+            var attributeUsingStringType = stringType.Attributes.ToArray();
+
             var id = stringType.Id;
 
             /*ICollection<EntityCore.Proxy.IBaseEntity> a = new HashSet<AttributeTest>();

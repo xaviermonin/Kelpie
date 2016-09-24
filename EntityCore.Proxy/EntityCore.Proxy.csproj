@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindedNavigationPropertyAttribute.cs" />
     <Compile Include="IBaseEntity.cs" />
     <Compile Include="Metadata\IAttribute.cs" />
     <Compile Include="Metadata\IAttributeType.cs" />

@@ -73,18 +73,25 @@ namespace EntityCore.DynamicEntity.Construction
             return typeToTest.IsGenericType && typeToTest.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
-        static public void CreatePropertyForType(TypeBuilder typeBuilder, string fieldName, Type fieldType)
+        static public PropertyBuilder CreateProperty(TypeBuilder typeBuilder, string propertyName, Type propertyType)
         {
-            FieldBuilder fieldBuilder = typeBuilder.DefineField("_" + fieldName.ToLowerInvariant(), fieldType, FieldAttributes.Private);
+            FieldBuilder fieldBuilder = TypeHelper.CreatePrivateField(typeBuilder,propertyType, propertyName);
 
-            PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(fieldName, PropertyAttributes.HasDefault, fieldType, null);
+            PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(propertyName, PropertyAttributes.HasDefault, propertyType, null);
 
             MethodAttributes getterAndSetterAttributes = MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Virtual;
 
             //creates the Get Method for the property
-            propertyBuilder.SetGetMethod(CreateGetMethod(typeBuilder, getterAndSetterAttributes, fieldName, fieldType, fieldBuilder));
+            propertyBuilder.SetGetMethod(CreateGetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
             //creates the Set Method for the property and also adds the invocation of the property change
-            propertyBuilder.SetSetMethod(CreateSetMethod(typeBuilder, getterAndSetterAttributes, fieldName, fieldType, fieldBuilder));
+            propertyBuilder.SetSetMethod(CreateSetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
+
+            return propertyBuilder;
+        }
+
+        static public FieldBuilder CreatePrivateField(TypeBuilder typeBuilder, Type fieldType, string fieldName)
+        {
+            return typeBuilder.DefineField("_" + fieldName.ToLowerInvariant(), fieldType, FieldAttributes.Private);
         }
 
         static public MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, MethodAttributes attr, string name, Type type, FieldBuilder fieldBuilder)
@@ -101,7 +108,7 @@ namespace EntityCore.DynamicEntity.Construction
 
         static public MethodBuilder CreateSetMethod(TypeBuilder typeBuilder, MethodAttributes attr, string name, Type type, FieldBuilder fieldBuilder)
         {
-            var methodBuilder = typeBuilder.DefineMethod("set" + name, attr, null, new[] { type });
+            var methodBuilder = typeBuilder.DefineMethod("set_" + name, attr, null, new[] { type });
             var generator = methodBuilder.GetILGenerator();
             generator.Emit(OpCodes.Ldarg_0);
             generator.Emit(OpCodes.Ldarg_1);
@@ -110,5 +117,42 @@ namespace EntityCore.DynamicEntity.Construction
 
             return methodBuilder;
         }
+
+        static public MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, MethodAttributes attr, 
+                                                    string name, Type type,
+                                                    IEnumerable<CustomAttributeBuilder> attributes)
+        {
+            var method = typeBuilder.DefineMethod("get_" + name, attr, type, Type.EmptyTypes);
+
+            foreach (var attribute in attributes)
+                method.SetCustomAttribute(attribute);
+
+            return method;
+        }
+
+        private const MethodAttributes ExplicitImplementation =
+                    MethodAttributes.Private | MethodAttributes.Virtual | MethodAttributes.Final |
+                    MethodAttributes.HideBySig | MethodAttributes.NewSlot;
+
+        private const MethodAttributes ImplicitImplementation =
+                    MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig;
+
+        static public MethodBuilder CreateGetExplImplMethod(TypeBuilder typeBuilder,
+                                                            string name, Type returnedType, Type interfaceType)
+        {
+            MethodInfo interfaceMethod = interfaceType.GetMethod("get_" + name);
+
+            var method = typeBuilder.DefineMethod(string.Format("get_{0}.{1}", interfaceType.FullName, name),
+                                                  ExplicitImplementation, returnedType, Type.EmptyTypes);
+
+            typeBuilder.DefineMethodOverride(method, interfaceMethod);
+
+            return method;
+        }
+
+        /*static public IEnumerable<PropertyInfo> GetPropertiesByGenericType(Type type)
+        {
+
+        }*/
     }
 }

@@ -34,7 +34,7 @@ namespace EntityCore.DynamicEntity.Construction
                 throw new InvalidOperationException("NavigationProperties already added");
 
             NavigationPropertyBuilder navPropFact = new NavigationPropertyBuilder(TypeBuilder);
-            navPropFact.CreateNavigationProperties(Entity.ManyToOneRelationships, Entity.OneToManyRelationships, availableTypes);
+            navPropFact.CreateNavigationProperties(Entity, availableTypes);
 
             NavigationPropertiesAdded = true;
         }

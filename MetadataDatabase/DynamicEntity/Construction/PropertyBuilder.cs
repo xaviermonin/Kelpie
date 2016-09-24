@@ -14,13 +14,13 @@ namespace EntityCore.DynamicEntity.Construction
 {
     class PropertyFactory
     {
-        private readonly MethodInfo setPropertyMethod;
+        //private readonly MethodInfo setPropertyMethod;
         private System.Reflection.Emit.TypeBuilder _typeBuilder;
 
         public PropertyFactory(System.Reflection.Emit.TypeBuilder typeBuilder)
         {
             _typeBuilder = typeBuilder;
-            setPropertyMethod = typeof(BaseEntity).GetMethod("SetProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+            //setPropertyMethod = typeof(BaseEntity).GetMethod("SetProperty", BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
         public void CreateProperties(ICollection<Models.Attribute> properties)
@@ -37,20 +37,11 @@ namespace EntityCore.DynamicEntity.Construction
             else
                 fieldType = Type.GetType(attribute.Type.ClrName);
 
-            FieldBuilder fieldBuilder = _typeBuilder.DefineField("_" + attribute.Name.ToLowerInvariant(), fieldType, FieldAttributes.Private);
-
-            PropertyBuilder propertyBuilder = _typeBuilder.DefineProperty(attribute.Name, PropertyAttributes.HasDefault, fieldType, null);
+            var propertyBuilder = TypeHelper.CreateProperty(_typeBuilder, attribute.Name, fieldType);
 
             //add the various WCF and EF attributes to the property
             AddDataMemberAttribute(propertyBuilder);
             AddColumnAttribute(propertyBuilder, attribute.Type.SqlServerName);
-
-            MethodAttributes getterAndSetterAttributes = MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Virtual;
-
-            //creates the Get Method for the property
-            propertyBuilder.SetGetMethod(CreateGetMethod(getterAndSetterAttributes, attribute.Name, fieldType, fieldBuilder));
-            //creates the Set Method for the property and also adds the invocation of the property change
-            propertyBuilder.SetSetMethod(CreateSetMethod(getterAndSetterAttributes, attribute.Name, fieldType, fieldBuilder));
         }
 
         /*public void AddDataServiceKeyAttribute()
@@ -79,7 +70,7 @@ namespace EntityCore.DynamicEntity.Construction
             propertyBuilder.SetCustomAttribute(attr);
         }
 
-        private MethodBuilder CreateGetMethod(MethodAttributes attr, string name, Type type, FieldBuilder fieldBuilder)
+        /*private MethodBuilder CreateGetMethod(MethodAttributes attr, string name, Type type, FieldBuilder fieldBuilder)
         {
             var getMethodBuilder = _typeBuilder.DefineMethod("get_" + name, attr, type, Type.EmptyTypes);
 
@@ -112,6 +103,6 @@ namespace EntityCore.DynamicEntity.Construction
             setMethodILGenerator.Emit(OpCodes.Ret);
 
             return setMethodBuilder;
-        }
+        }*/
     }
 }

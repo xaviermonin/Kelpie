@@ -40,7 +40,11 @@ namespace EntityCore.DynamicEntity
                                                .Include(c => c.ManyToOneRelationships)
                                                .Include(c => c.OneToManyRelationships).ToArray();
 
-                return assemblyBuilder.BuildTypes(entities);
+                var types = assemblyBuilder.BuildTypes(entities).ToArray();
+
+                assemblyBuilder.SaveAssembly();
+
+                return types;
             }
         }
     }

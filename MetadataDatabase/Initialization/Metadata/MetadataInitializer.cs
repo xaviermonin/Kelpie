@@ -110,7 +110,7 @@ namespace EntityCore.Initialization.Metadata
                     {
                         Name = "IsNullable",
                         IsNullable = true,
-                        Type = intType,
+                        Type = boolType,
                         Managed = true,
                         Metadata = true,
                     },
@@ -183,6 +183,15 @@ namespace EntityCore.Initialization.Metadata
                         Metadata = true,
                     },
                 }
+            });
+
+            attributeTypeEntity.OneToManyRelationships.Add(new Models.Relationship()
+            {
+                Name = "Attributes",
+                One = attributeTypeEntity,
+                OneNavigationName = "Type",
+                Many = attributeEntity,
+                ManyNavigationName = "Attributes"
             });
 
             // Proxy

@@ -23,6 +23,7 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        ICollection<IAttribute> Attributes { get; set; }
+        [BindedNavigationProperty]
+        ICollection<IAttribute> Attributes { get; }
     }
 }

@@ -24,6 +24,14 @@ namespace Experience
 
         private BindingCollection<Wheel, IWheel> bindingCollectionRoues;
 
+        ICollection<IWheel> ICar.Test()
+        {
+                if (bindingCollectionRoues == null)
+                    bindingCollectionRoues = new BindingCollection<Wheel, IWheel>(this.Roues);
+
+                return bindingCollectionRoues;
+        }
+
         [NotMapped]
         ICollection<IWheel> ICar.Roues
         {

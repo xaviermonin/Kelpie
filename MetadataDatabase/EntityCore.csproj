@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicEntity\Behavior\EntityToSqlStructure.cs" />
+    <Compile Include="DynamicEntity\Construction\Materials\BindingCollection.cs" />
     <Compile Include="DynamicEntity\Construction\TypeHelper.cs" />
     <Compile Include="DynamicEntity\EntityDbSet.cs" />
     <Compile Include="DynamicEntity\EntityTypeCache.cs" />
