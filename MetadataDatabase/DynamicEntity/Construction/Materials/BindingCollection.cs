@@ -9,20 +9,20 @@ namespace EntityCore.DynamicEntity.Construction.Materials
     /// <summary>
     /// Bind to an ICollection of an other type
     /// </summary>
-    /// <typeparam name="A">Destination</typeparam>
-    /// <typeparam name="T">Source</typeparam>
-    public class BindingCollection<A, T> : ICollection<T> where A : class
+    /// <typeparam name="TOutput">Destination</typeparam>
+    /// <typeparam name="TInput">Source</typeparam>
+    public class BindingCollection<TOutput, TInput> : ICollection<TInput> where TOutput : class, TInput
     {
-        ICollection<A> collection;
+        ICollection<TOutput> collection;
 
-        public BindingCollection(ICollection<A> collection)
+        public BindingCollection(ICollection<TOutput> collection)
         {
             this.collection = collection;
         }
 
-        public void Add(T item)
+        public void Add(TInput item)
         {
-            collection.Add(item as A);
+            collection.Add((TOutput)item);
         }
 
         public void Clear()
@@ -30,14 +30,15 @@ namespace EntityCore.DynamicEntity.Construction.Materials
             collection.Clear();
         }
 
-        public bool Contains(T item)
+        public bool Contains(TInput item)
         {
-            return collection.Contains(item as A);
+            return collection.Contains((TOutput)item);
         }
 
-        public void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(TInput[] array, int arrayIndex)
         {
-            collection.CopyTo(array as A[], arrayIndex);
+            var arrayAsA = array.Cast<TOutput>().ToArray();
+            collection.CopyTo(arrayAsA, arrayIndex);
         }
 
         public int Count
@@ -56,14 +57,14 @@ namespace EntityCore.DynamicEntity.Construction.Materials
             }
         }
 
-        public bool Remove(T item)
+        public bool Remove(TInput item)
         {
-            return collection.Remove(item as A);
+            return collection.Remove((TOutput)item);
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<TInput> GetEnumerator()
         {
-            return collection.GetEnumerator() as IEnumerator<T>;
+            return (IEnumerator<TInput>)collection.GetEnumerator();
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

@@ -26,6 +26,8 @@ namespace EntityCore.DynamicEntity.Construction
             Entity = entity;
             _moduleBuilder = moduleBuilder;
             TypeBuilder = CreateDynamicTypeBuilder<BaseEntity>();
+
+            System.Diagnostics.Debug.WriteLine("{0} initialization", Entity.Name);
         }
 
         internal void AddNavigationProperties(IEnumerable<Type> availableTypes = null)
@@ -37,6 +39,8 @@ namespace EntityCore.DynamicEntity.Construction
             navPropFact.CreateNavigationProperties(Entity, availableTypes);
 
             NavigationPropertiesAdded = true;
+
+            System.Diagnostics.Debug.WriteLine("{0} navigation properties added", Entity.Name);
         }
 
         internal void AddProperties()
@@ -48,6 +52,8 @@ namespace EntityCore.DynamicEntity.Construction
             propertyFactory.CreateProperties(Entity.Attributes);
 
             PropertiesAdded = true;
+
+            System.Diagnostics.Debug.WriteLine("{0} properties added", Entity.Name);
         }
 
         /// <summary>

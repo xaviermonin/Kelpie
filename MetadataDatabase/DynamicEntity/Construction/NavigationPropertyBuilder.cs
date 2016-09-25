@@ -64,26 +64,26 @@ namespace EntityCore.DynamicEntity.Construction
             foreach (var navProp in proxyNavProperties)
             {
                 var proxyNavPropType = navProp.PropertyType;
-                var proxyEncapsulatedType = proxyNavPropType.GetGenericArguments().Single();
+                var proxyNavPropEncapsulatedType = proxyNavPropType.GetGenericArguments().Single();
                 var bindedNavPropAttribute = (BindedNavigationPropertyAttribute)navProp.GetCustomAttribute(typeof(BindedNavigationPropertyAttribute));
                 var propertyName = bindedNavPropAttribute.NavigationProperty ?? navProp.Name;
-
                 var getPropertyMethod = getMethodsInfos.Where(m => m.Name == "get_" + propertyName).Single();
+                var bindedNavPropEncapsulatedType = getPropertyMethod.ReturnType.GetGenericArguments().Single();
 
-                CreateProxyNavigationBinding(proxyType, proxyEncapsulatedType, propertyName, getPropertyMethod);
+                CreateProxyNavigationBinding(proxyType, proxyNavPropEncapsulatedType, propertyName, getPropertyMethod, bindedNavPropEncapsulatedType);
             }
         }
 
-        private PropertyBuilder CreateProxyNavigationBinding(Type proxyType, Type bindedType, string propertyName, MethodInfo getPropertyMethod)
+        private PropertyBuilder CreateProxyNavigationBinding(Type proxyType, Type proxyNavType, string propertyName, MethodInfo getPropertyMethod, Type bindedNavType)
         {
             var notMappedAttributeConstructor = typeof(NotMappedAttribute).GetConstructor(new Type[] { });
             var customerAttributeBuilder = new CustomAttributeBuilder(notMappedAttributeConstructor, new object[] { });
-
-            var bindingCollectionType = typeof(Materials.BindingCollection<,>).MakeGenericType(bindedType, proxyType);
-            var iCollectionProxyType = typeof(ICollection<>).MakeGenericType(proxyType);
-            var iCollectionBindedType = typeof(ICollection<>).MakeGenericType(bindedType);
-
-            var getProxyMethod = TypeHelper.CreateGetExplImplMethod(_typeBuilder, propertyName, iCollectionBindedType, proxyType);
+            // Attribute | IAttribute
+            var bindingCollectionType = typeof(Materials.BindingCollection<,>).MakeGenericType(bindedNavType, proxyNavType);
+            var iCollectionProxyType = typeof(ICollection<>).MakeGenericType(proxyNavType);
+            var iCollectionBindedType = typeof(ICollection<>).MakeGenericType(bindedNavType);
+            
+            var getProxyMethod = TypeHelper.CreateGetExplImplMethod(_typeBuilder, propertyName, iCollectionProxyType, proxyType);
             /* new CustomAttributeBuilder[] { customerAttributeBuilder } );*/
 
             PropertyBuilder propertyBuilder = _typeBuilder.DefineProperty(string.Format("{0}.{1}", proxyType.FullName, propertyName),
@@ -92,7 +92,8 @@ namespace EntityCore.DynamicEntity.Construction
             // Preparing Reflection instances
             FieldInfo bindingCollectionField = TypeHelper.CreatePrivateField(_typeBuilder, bindingCollectionType, "bindingCollection" + propertyName);
 
-            ConstructorInfo bindingCollectionConstructor = bindingCollectionType.GetConstructor(new Type[]{ iCollectionBindedType });
+            var ctors = typeof(Materials.BindingCollection<,>).GetConstructors().Single();
+            ConstructorInfo bindingCollectionConstructor = TypeBuilder.GetConstructor(bindingCollectionType, ctors);
 
             // Setting return type
             getProxyMethod.SetReturnType(iCollectionProxyType);

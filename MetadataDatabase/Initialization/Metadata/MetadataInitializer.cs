@@ -232,6 +232,13 @@ namespace EntityCore.Initialization.Metadata
                 FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IAttributeType).AssemblyQualifiedName
             });
 
+            proxies.Add(new Models.Proxy()
+            {
+                Entity = attributeEntity,
+                Managed = true,
+                FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IAttribute).AssemblyQualifiedName
+            });
+
             #endregion
 
             #region Behaviors

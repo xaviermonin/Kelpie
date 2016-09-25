@@ -14,7 +14,7 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        bool IsNullable
+        bool? IsNullable
         {
             get;
             set;
@@ -32,13 +32,13 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        bool Managed
+        bool? Managed
         {
             get;
             set;
         }
 
-        IAttributeType Type { get; set; }
-        IEntity Entity { get; set; }
+        /*IAttributeType Type { get; set; }
+        IEntity Entity { get; set; }*/
     }
 }
