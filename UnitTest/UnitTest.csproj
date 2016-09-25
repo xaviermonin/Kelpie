@@ -67,7 +67,7 @@
       <Project>{9297bced-b93e-4c04-9488-8fa3d4b9c702}</Project>
       <Name>EntityCore.Proxy</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MetadataDatabase\EntityCore.csproj">
+    <ProjectReference Include="..\EntityCore\EntityCore.csproj">
       <Project>{42314e0c-81c6-4d3e-8e1f-f4d7d39aadea}</Project>
       <Name>EntityCore</Name>
     </ProjectReference>

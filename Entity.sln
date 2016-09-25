@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore", "MetadataDatabase\EntityCore.csproj", "{42314E0C-81C6-4D3E-8E1F-F4D7D39AADEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore", "EntityCore\EntityCore.csproj", "{42314E0C-81C6-4D3E-8E1F-F4D7D39AADEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{36A6A28C-5CE5-4277-AC9A-E646BFFAA184}"
 EndProject
