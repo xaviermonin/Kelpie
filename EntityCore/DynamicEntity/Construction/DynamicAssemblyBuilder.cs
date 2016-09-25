@@ -46,12 +46,16 @@ namespace EntityCore.DynamicEntity.Construction
             var typesBuilders = entitiesFactories.Select(c => c.TypeBuilder);
 
             foreach (var entityFactory in entitiesFactories)
-            {
                 entityFactory.AddProperties();
+
+            foreach (var entityFactory in entitiesFactories)
                 entityFactory.AddNavigationProperties(typesBuilders);
 
+            foreach (var entityFactory in entitiesFactories)
+                entityFactory.AddBindedNavigationProperties(typesBuilders);
+
+            foreach (var entityFactory in entitiesFactories)
                 yield return entityFactory.TypeBuilder.CreateType();
-            }
         }
 
         private IEnumerable<EntityBuilder> CreateEntitiesBuilders(IEnumerable<Models.Entity> entities)

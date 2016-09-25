@@ -20,6 +20,7 @@ namespace EntityCore.DynamicEntity.Construction
 
         public bool PropertiesAdded { get; private set; }
         public bool NavigationPropertiesAdded { get; private set; }
+        public bool BindeNavigationPropertiesAdded { get; private set; }
 
         public EntityBuilder(Models.Entity entity, ModuleBuilder moduleBuilder)
         {
@@ -27,20 +28,33 @@ namespace EntityCore.DynamicEntity.Construction
             _moduleBuilder = moduleBuilder;
             TypeBuilder = CreateDynamicTypeBuilder<BaseEntity>();
 
-            System.Diagnostics.Debug.WriteLine("{0} initialization", Entity.Name);
+            System.Diagnostics.Debug.WriteLine("{0} initialization", new object[] { Entity.Name });
         }
 
         internal void AddNavigationProperties(IEnumerable<Type> availableTypes = null)
         {
             if (NavigationPropertiesAdded)
-                throw new InvalidOperationException("NavigationProperties already added");
+                throw new InvalidOperationException("Navigation properties already added");
 
             NavigationPropertyBuilder navPropFact = new NavigationPropertyBuilder(TypeBuilder);
             navPropFact.CreateNavigationProperties(Entity, availableTypes);
 
             NavigationPropertiesAdded = true;
 
-            System.Diagnostics.Debug.WriteLine("{0} navigation properties added", Entity.Name);
+            System.Diagnostics.Debug.WriteLine("{0} navigation properties added", new object[] { Entity.Name });
+        }
+
+        internal void AddBindedNavigationProperties(IEnumerable<Type> availableTypes = null)
+        {
+            if (BindeNavigationPropertiesAdded)
+                throw new InvalidOperationException("Binded navigation properties already added");
+
+            BindedNavigationPropertyBuilder navPropFact = new BindedNavigationPropertyBuilder(TypeBuilder);
+            navPropFact.CreateBindedNavigationProperty(Entity);
+
+            BindeNavigationPropertiesAdded = true;
+
+            System.Diagnostics.Debug.WriteLine("{0} binded navigation properties added", new object[] { Entity.Name });
         }
 
         internal void AddProperties()
@@ -53,7 +67,7 @@ namespace EntityCore.DynamicEntity.Construction
 
             PropertiesAdded = true;
 
-            System.Diagnostics.Debug.WriteLine("{0} properties added", Entity.Name);
+            System.Diagnostics.Debug.WriteLine("{0} properties added", new object[] { Entity.Name });
         }
 
         /// <summary>
