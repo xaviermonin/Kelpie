@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 
 namespace EntityCore.Entity
 {
-    public abstract class BaseEntity : INotifyAttributeChanged, IBaseEntity
+    public abstract class BaseEntity : IBaseEntity
     {
         private int _id;
 
@@ -22,11 +22,6 @@ namespace EntityCore.Entity
             }
         }
 
-        protected void NotifyEventHub()
-        {
-            EventHub.SubscribeEntity(this);
-        }
-
         protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
             if (object.Equals(storage, value)) return false;
@@ -34,16 +29,8 @@ namespace EntityCore.Entity
             T oldValue = storage;
 
             storage = value;
-            this.OnPropertyChanged(oldValue, propertyName);
+            
             return true;
-        }
-
-        public event AttributeChangedEventHandler AttributeChanged;
-
-        protected void OnPropertyChanged<T>(T oldValue, [CallerMemberName] string propertyName = null)
-        {
-            if (AttributeChanged != null)
-                AttributeChanged.Invoke(this, new AttributeChangedEventArgs(propertyName, oldValue));
         }
 
         public T GetAttributeValue<T>(string propertyName)

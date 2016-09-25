@@ -73,18 +73,6 @@
     <Compile Include="Initialization\Metadata\Models\Attribute.cs" />
     <Compile Include="Initialization\Metadata\Models\AttributeType.cs" />
     <Compile Include="Initialization\Metadata\Models\Entity.cs" />
-    <Compile Include="Obsolete\AttributeChangedEventArgs.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Obsolete\EventHub.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Obsolete\IAttributeChangedBehavior.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Obsolete\INotifyAttributeChanged.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
