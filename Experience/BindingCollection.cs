@@ -11,7 +11,7 @@ namespace Experience
     /// </summary>
     /// <typeparam name="A">Destination</typeparam>
     /// <typeparam name="T">Source</typeparam>
-    class BindingCollection<A, T> : ICollection<T> where A : class
+    class BindingCollection<A, T> : ICollection<T> where A : class, T
     {
         ICollection<A> collection;
 
@@ -37,7 +37,10 @@ namespace Experience
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            collection.CopyTo(array.Cast<A>().ToArray(), arrayIndex);
+            A[] tmp = Array.ConvertAll(array, element => element as A);
+            collection.CopyTo(tmp, arrayIndex);
+            for (int i = arrayIndex; i < array.Length - arrayIndex; ++i)
+                array[i] = tmp[i];
         }
 
         public int Count

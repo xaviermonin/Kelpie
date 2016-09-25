@@ -49,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BindingCollection.cs" />
+    <Compile Include="Buffer.cs" />
     <Compile Include="IWheel.cs" />
     <Compile Include="ICar.cs" />
+    <Compile Include="ToArray.cs" />
     <Compile Include="Wheel.cs" />
     <Compile Include="Car.cs" />
     <Compile Include="Context.cs" />

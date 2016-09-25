@@ -37,8 +37,11 @@ namespace EntityCore.DynamicEntity.Construction.Materials
 
         public void CopyTo(TInput[] array, int arrayIndex)
         {
-            var arrayAsA = array.Cast<TOutput>().ToArray();
-            collection.CopyTo(arrayAsA, arrayIndex);
+            TOutput[] tpmArray = new TOutput[array.Length];
+            collection.CopyTo(tpmArray, arrayIndex);
+
+            for (int i = arrayIndex; i < array.Length - arrayIndex; ++i)
+                array[i] = tpmArray[i];
         }
 
         public int Count
