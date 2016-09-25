@@ -12,7 +12,7 @@ namespace Experience
         public Context(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<Context>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<Context>());
         }
 
         public DbSet<Wheel> Roues { get; set; }

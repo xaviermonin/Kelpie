@@ -37,7 +37,7 @@ namespace Experience
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            collection.CopyTo(array as A[], arrayIndex);
+            collection.CopyTo(array.Cast<A>().ToArray(), arrayIndex);
         }
 
         public int Count

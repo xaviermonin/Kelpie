@@ -18,13 +18,13 @@ namespace Experience
             ICar voiture = new Car();
             voiture.Name = "208";
 
-            voiture.Roues.Add(new Wheel()
+            /*voiture.Roues.Add(new Wheel()
             {
                 Dimension = 10
             });
 
             context.Voitures.Add(voiture as Car);
-            context.SaveChanges();
+            context.SaveChanges();*/
 
             var sqlQuery = (context.Voitures as IQueryable<ICar>).Include(c => c.Roues)
                                                                      .Where(c => c.Name == "208")
@@ -36,6 +36,7 @@ namespace Experience
                                                                      }).ToString();
 
             ICar cBon = (context.Voitures as IEnumerable<ICar>).Where(c => c.Name == "208").Single();
+            var results = (context.Voitures as IQueryable<ICar>).Include(c => c.Roues).First().Roues.ToArray();
         }
 
         static private void TestTypeBuilder()
@@ -63,6 +64,7 @@ namespace Experience
 
         static void Main(string[] args)
         {
+            TestProxies();
             TestTypeBuilder();
         }
     }
