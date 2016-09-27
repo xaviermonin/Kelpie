@@ -38,7 +38,10 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        /*IAttributeType Type { get; set; }
+        [BindedNavigationProperty]
+        IAttributeType Type { get; set; }
+
+        /*[BindedNavigationProperty]
         IEntity Entity { get; set; }*/
     }
 }

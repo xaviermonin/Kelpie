@@ -12,5 +12,8 @@ namespace Experience
         int Dimension { get; set; }
 
         ICar Proprietaire { get; set; }
+
+        ICar GetProprietaire();
+        void SetProprietaire(ICar car);
     }
 }

@@ -52,14 +52,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicEntity\Behavior\EntityToSqlStructure.cs" />
-    <Compile Include="DynamicEntity\Construction\BindedNavigationPropertyBuilder.cs" />
+    <Compile Include="DynamicEntity\Construction\EntityFactory.cs" />
+    <Compile Include="DynamicEntity\Construction\JobBag.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\BindedNavigationPropertyWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\EntityInitializationWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshopResult.cs" />
+    <Compile Include="DynamicEntity\Construction\IEntityWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Materials\BindingCollection.cs" />
     <Compile Include="DynamicEntity\Construction\TypeHelper.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\NavigationPropertyWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\PropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\EntityDbSet.cs" />
     <Compile Include="DynamicEntity\EntityTypeCache.cs" />
     <Compile Include="DynamicEntity\Construction\DynamicAssemblyBuilder.cs" />
-    <Compile Include="DynamicEntity\Construction\NavigationPropertyBuilder.cs" />
-    <Compile Include="DynamicEntity\Construction\PropertyBuilder.cs" />
     <Compile Include="Entity\Event\EventDispatcher.cs" />
     <Compile Include="Entity\Event\IEntityListener.cs" />
     <Compile Include="Entity\BaseEntityContext.cs" />
@@ -68,7 +74,6 @@
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="DynamicEntity\DynamicEntityContext.cs" />
     <Compile Include="DynamicEntity\DatabaseStructure\EntityDatabaseStructure.cs" />
-    <Compile Include="DynamicEntity\Construction\EntityBuilder.cs" />
     <Compile Include="Initialization\Metadata\MetadataContext.cs" />
     <Compile Include="Initialization\Metadata\MetadataInitializer.cs" />
     <Compile Include="Initialization\Metadata\Models\Attribute.cs" />

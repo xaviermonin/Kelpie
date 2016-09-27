@@ -137,22 +137,51 @@ namespace EntityCore.DynamicEntity.Construction
         private const MethodAttributes ImplicitImplementation =
                     MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.HideBySig;
 
-        static public MethodBuilder CreateGetExplImplMethod(TypeBuilder typeBuilder,
-                                                            string name, Type returnedType, Type interfaceType)
+        [Flags]
+        public enum PropertyGetSet { Get = 1, Set = 2, Both = Get | Set }
+
+        static public PropertyBuilder CreatePropertyExplImpl(TypeBuilder typeBuilder, string name,
+                                                             Type propertyType, Type interfaceType,
+                                                             PropertyGetSet propertyGetSet)
+        {
+            PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(string.Format("{0}.{1}", interfaceType.FullName, name),
+                                                                          PropertyAttributes.HasDefault, propertyType, null);
+
+            if ((propertyGetSet & PropertyGetSet.Get) == PropertyGetSet.Get)
+                propertyBuilder.SetGetMethod(CreateGetMethodExplImpl(typeBuilder, name, propertyType, interfaceType));
+
+            if ((propertyGetSet & PropertyGetSet.Set) == PropertyGetSet.Set)
+                propertyBuilder.SetSetMethod(CreateSetMethodExplImpl(typeBuilder, name, propertyType, interfaceType));
+
+            return propertyBuilder;
+        }
+
+        static public MethodBuilder CreateGetMethodExplImpl(TypeBuilder typeBuilder,
+                                                            string name, Type returnType, Type interfaceType)
         {
             MethodInfo interfaceMethod = interfaceType.GetMethod("get_" + name);
 
             var method = typeBuilder.DefineMethod(string.Format("get_{0}.{1}", interfaceType.FullName, name),
-                                                  ExplicitImplementation, returnedType, Type.EmptyTypes);
+                                                  ExplicitImplementation, returnType, Type.EmptyTypes);
+
+            method.SetReturnType(returnType);
 
             typeBuilder.DefineMethodOverride(method, interfaceMethod);
 
             return method;
         }
 
-        /*static public IEnumerable<PropertyInfo> GetPropertiesByGenericType(Type type)
+        static public MethodBuilder CreateSetMethodExplImpl(TypeBuilder typeBuilder,
+                                                            string name, Type type, Type interfaceType)
         {
+            MethodInfo interfaceMethod = interfaceType.GetMethod("set_" + name);
 
-        }*/
+            var methodBuilder = typeBuilder.DefineMethod(string.Format("set_{0}.{1}", interfaceType.FullName, name),
+                                                         ExplicitImplementation, null, new[] { type });
+
+            typeBuilder.DefineMethodOverride(methodBuilder, interfaceMethod);
+
+            return methodBuilder;
+        }
     }
 }

@@ -29,5 +29,15 @@ namespace Experience
                 Proprietaire = value as Car;
             }
         }
+
+        ICar IWheel.GetProprietaire()
+        {
+            return Proprietaire;
+        }
+
+        void IWheel.SetProprietaire(ICar car)
+        {
+            Proprietaire = car as Car;
+        }
     }
 }

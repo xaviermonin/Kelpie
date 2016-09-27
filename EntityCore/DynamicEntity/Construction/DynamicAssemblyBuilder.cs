@@ -42,29 +42,8 @@ namespace EntityCore.DynamicEntity.Construction
 
         internal IEnumerable<Type> BuildTypes(IEnumerable<Models.Entity> entities)
         {
-            var entitiesFactories = CreateEntitiesBuilders(entities).ToArray();
-            var typesBuilders = entitiesFactories.Select(c => c.TypeBuilder);
-
-            foreach (var entityFactory in entitiesFactories)
-                entityFactory.AddProperties();
-
-            foreach (var entityFactory in entitiesFactories)
-                entityFactory.AddNavigationProperties(typesBuilders);
-
-            foreach (var entityFactory in entitiesFactories)
-                entityFactory.AddBindedNavigationProperties(typesBuilders);
-
-            foreach (var entityFactory in entitiesFactories)
-                yield return entityFactory.TypeBuilder.CreateType();
-        }
-
-        private IEnumerable<EntityBuilder> CreateEntitiesBuilders(IEnumerable<Models.Entity> entities)
-        {
-            foreach (var entity in entities)
-            {
-                EntityBuilder entityFactory = new EntityBuilder(entity, _moduleBuilder);
-                yield return entityFactory;
-            }
+            EntityFactory factory = new EntityFactory(_moduleBuilder);
+            return factory.Build(entities);
         }
 
         public string Name { get; private set; }

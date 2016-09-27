@@ -29,10 +29,16 @@ namespace UnitTest
         public void CreateEntity()
         {
             DynamicEntityContext entityContext = new DynamicEntityContext("name=DataDbContext");
-            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").Include(c => c.Attributes).Where(c => c.ClrName == "System.String").Single();
+            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.String").Single();
             IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType").Where(c => c.ClrName == "System.Int32").Single();
 
-            var attributeUsingStringType = stringType.Attributes.ToArray();
+            var attributesUsingStringType = entityContext.ProxySet<IAttributeType>("AttributeType")
+                                                         .Include(c => c.Attributes)
+                                                         .Where(c => c.ClrName == "System.String")
+                                                         .SelectMany(c => c.Attributes).ToArray();
+
+            foreach (var attribute in attributesUsingStringType)
+                System.Diagnostics.Trace.WriteLine(string.Format("Attribute: {0}. Id: {1}. Type: {2}", attribute.Name, attribute.Id, attribute.Type.ClrName));
 
             var id = stringType.Id;
 
