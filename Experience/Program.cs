@@ -15,31 +15,34 @@ namespace Experience
         static private void TestProxies()
         {
             Context context = new Context("name=DataDbContext");
-            ICar voiture = new Car();
-            voiture.Name = "208";
+            ICar car = new Car();
+            car.Name = "208";
 
-            voiture.Roues.Add(new Wheel()
+            car.Wheels.Add(new Wheel()
             {
-                Dimension = 10
+                Size = 10
             });
 
-            context.Voitures.Add(voiture as Car);
+            context.Cars.Add(car as Car);
             context.SaveChanges();
 
-            var sqlQuery = (context.Voitures as IQueryable<ICar>).Include(c => c.Roues)
+            var sqlQuery = (context.Cars as IQueryable<ICar>).Include(c => c.Wheels)
                                                                      .Where(c => c.Name == "208")
                                                                      .Select(c => new
                                                                      {
                                                                          Id = c.Id,
-                                                                         FirstRoue = c.Roues.FirstOrDefault(),
+                                                                         FirstRoue = c.Wheels.FirstOrDefault(),
                                                                          Name = c.Name
                                                                      }).ToString();
 
-            ICar cBon = (context.Voitures as IEnumerable<ICar>).Where(c => c.Name == "208").Single();
-            var results = (context.Voitures as IQueryable<ICar>).Include(c => c.Roues).First().Roues;
+            ICar cBon = (context.Cars as IEnumerable<ICar>).Where(c => c.Name == "208").Single();
+            var results = (context.Cars as IQueryable<ICar>).Include(c => c.Wheels).First().Wheels;
 
             foreach (var r in results.ToArrayTest())
             {
+                var a = r.GetProprietaire(); // Force build of this method in release
+                r.SetProprietaire(a);
+
                 Console.Write(r);
             }
         }

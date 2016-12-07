@@ -11,7 +11,7 @@ namespace Experience
 
         string Name { get; set; }
 
-        ICollection<IWheel> Roues { get; }
+        ICollection<IWheel> Wheels { get; }
 
         ICollection<IWheel> Test();
     }

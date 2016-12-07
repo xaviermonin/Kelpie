@@ -33,7 +33,7 @@ namespace Experience
         }
 
         [NotMapped]
-        ICollection<IWheel> ICar.Roues
+        ICollection<IWheel> ICar.Wheels
         {
             get {
                 if (bindingCollectionRoues == null)

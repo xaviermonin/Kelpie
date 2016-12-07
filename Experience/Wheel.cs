@@ -13,7 +13,7 @@ namespace Experience
         [Key]
         public int Id { get; set; }
 
-        public int Dimension { get; set; }
+        public int Size { get; set; }
 
         public Car Proprietaire { get; set; }
 

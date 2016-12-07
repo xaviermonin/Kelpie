@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Experience
 {
-    static class Pomme
+    static class IEnumerarableToArrayExtension
     {
         public static TSource[] ToArrayTest<TSource>(this IEnumerable<TSource> source)
         {

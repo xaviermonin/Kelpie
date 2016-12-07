@@ -9,7 +9,7 @@ namespace Experience
     {
         int Id { get; set; }
 
-        int Dimension { get; set; }
+        int Size { get; set; }
 
         ICar Proprietaire { get; set; }
 
