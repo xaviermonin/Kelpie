@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EntityCore.DynamicEntity.Construction.Helper.Reflection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
                                                                                            IEnumerable<Type> knowEntities)
         {
             Type type = knowEntities.Where(c => c.Name == manyToOne.One.Name).Single();
-            PropertyBuilder propertyBuilder = TypeHelper.CreateProperty(typeBuilder, manyToOne.OneNavigationName, type);
+            PropertyBuilder propertyBuilder = PropertyHelper.CreateFullProperty(typeBuilder, manyToOne.OneNavigationName, type);
             return new KeyValuePair<Models.Relationship, PropertyBuilder>(manyToOne, propertyBuilder);
         }
         
@@ -52,7 +53,7 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
         {
             var type = knowEntities.Where(c => c.Name == oneToMany.Many.Name).Single();
             var collectionType = typeof(ICollection<>).MakeGenericType(type);
-            PropertyBuilder propertyBuilder = TypeHelper.CreateProperty(typeBuilder, oneToMany.ManyNavigationName, collectionType);
+            PropertyBuilder propertyBuilder = PropertyHelper.CreateFullProperty(typeBuilder, oneToMany.ManyNavigationName, collectionType);
 
             var inverseProxyAttrConstruct = typeof(InversePropertyAttribute).GetConstructor(new Type[] { typeof(string) });
             var inverseProxyBuilder = new CustomAttributeBuilder(inverseProxyAttrConstruct, new string[] { oneToMany.OneNavigationName });

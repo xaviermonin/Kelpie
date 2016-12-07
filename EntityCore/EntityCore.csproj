@@ -53,14 +53,18 @@
   <ItemGroup>
     <Compile Include="DynamicEntity\Behavior\EntityToSqlStructure.cs" />
     <Compile Include="DynamicEntity\Construction\EntityFactory.cs" />
+    <Compile Include="DynamicEntity\Construction\Helpers\Emitter\EmitHelper.cs" />
     <Compile Include="DynamicEntity\Construction\JobBag.cs" />
+    <Compile Include="DynamicEntity\Construction\Helpers\Reflection\FieldHelper.cs" />
+    <Compile Include="DynamicEntity\Construction\Helpers\Reflection\MethodHelper.cs" />
+    <Compile Include="DynamicEntity\Construction\Helpers\Reflection\PropertyHelper.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\BindedNavigationPropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\EntityInitializationWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshopResult.cs" />
     <Compile Include="DynamicEntity\Construction\IEntityWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Materials\BindingCollection.cs" />
-    <Compile Include="DynamicEntity\Construction\TypeHelper.cs" />
+    <Compile Include="DynamicEntity\Construction\Helpers\Reflection\TypeHelper.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\NavigationPropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\PropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\EntityDbSet.cs" />
@@ -82,8 +86,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="UML\DynamicEntity.cd" />
     <None Include="packages.config" />
+    <None Include="UML\Entities - Production Line.cd" />
+    <None Include="UML\Metadata - Initialization.cd" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

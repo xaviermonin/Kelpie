@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EntityCore.DynamicEntity.Construction.Helper.Reflection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
             else
                 fieldType = Type.GetType(attribute.Type.ClrName);
 
-            var propertyBuilder = TypeHelper.CreateProperty(typeBuilder, attribute.Name, fieldType);
+            var propertyBuilder = PropertyHelper.CreateFullProperty(typeBuilder, attribute.Name, fieldType);
 
             //add the various WCF and EF attributes to the property
             AddDataMemberAttribute(propertyBuilder);
