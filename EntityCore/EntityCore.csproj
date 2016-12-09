@@ -65,6 +65,7 @@
     <Compile Include="DynamicEntity\Construction\IEntityWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Materials\BindingCollection.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\TypeHelper.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\Exceptions\MetaDataException.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\NavigationPropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\PropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\EntityDbSet.cs" />

@@ -1,5 +1,6 @@
 ﻿using EntityCore.DynamicEntity.Construction.Helper.Reflection;
 using EntityCore.DynamicEntity.Construction.Helpers.Emitter;
+using EntityCore.DynamicEntity.Construction.Workshops.Exceptions;
 using EntityCore.Proxy;
 using System;
 using System.Collections.Generic;
@@ -40,6 +41,12 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
             return new Result();
         }
 
+        /// <summary>
+        /// Get the property name of an entity
+        /// from BindedNavigationProperty property attribute
+        /// </summary>
+        /// <param name="proxyNavProp">PropertyInfo</param>
+        /// <returns></returns>
         private static string GetEntityPropName(PropertyInfo proxyNavProp)
         {
             return ((BindedNavigationPropertyAttribute)proxyNavProp.GetCustomAttribute(typeof(BindedNavigationPropertyAttribute)))
@@ -128,7 +135,15 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
                                                PropertyInfo proxyNavProp,
                                                NavigationPropertyWorkshop.Result navWorkshopResult)
         {
-            var navPropertyBuilder = navWorkshopResult.OneToMany.Where(c => c.Key.ManyNavigationName == GetEntityPropName(proxyNavProp)).Single();
+            var navPropertyBuilder = navWorkshopResult.OneToMany.Where(c => c.Key.ManyNavigationName == GetEntityPropName(proxyNavProp))
+                                                                .SingleOrDefault();
+
+            if (navPropertyBuilder.Equals(default(KeyValuePair<Models.Relationship, PropertyBuilder>)))
+                throw new MetaDataException("There are no metadata to describe '" +
+                                            GetEntityPropName(proxyNavProp) +
+                                            "' one to many relationship as expected in '" +
+                                            proxyType.FullName +
+                                            "' proxy");
 
             NavigationInfo proxyNavInfo = new NavigationInfo()
             {

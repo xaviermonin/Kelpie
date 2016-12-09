@@ -16,6 +16,10 @@ namespace EntityCore.DynamicEntity.Construction.Helpers.Emitter
     /// </summary>
     class EmitHelper
     {
+        /// <summary>
+        /// EmitHelper constructor
+        /// </summary>
+        /// <param name="ilGenerator">IGenerator</param>
         public EmitHelper(ILGenerator ilGenerator)
         {
             if (ilGenerator == null)
@@ -45,11 +49,11 @@ namespace EntityCore.DynamicEntity.Construction.Helpers.Emitter
         #region ILGenerator Methods
 
         /// <summary>
-	    /// Declares a local variable.
-	    /// </summary>
-	    /// <param name="localType">The Type of the local variable.</param>
-	    /// <returns>The declared local variable.</returns>
-	    public LocalBuilder DeclareLocal(Type localType)
+        /// Declares a local variable.
+        /// </summary>
+        /// <param name="localType">The Type of the local variable.</param>
+        /// <returns>The declared local variable.</returns>
+        public LocalBuilder DeclareLocal(Type localType)
         {
             return ILGenerator.DeclareLocal(localType);
         }
@@ -93,13 +97,13 @@ namespace EntityCore.DynamicEntity.Construction.Helpers.Emitter
         }
 
         /// <summary>
-	    /// Calls ILGenerator.Emit(<see cref="OpCodes.Ldloc"/>, short) that
-	    /// load an argument address onto the evaluation stack.
-	    /// </summary>
-	    /// <param name="index">Index of the local variable value pushed onto the stack.</param>
-	    /// <seealso cref="OpCodes.Ldloc">OpCodes.Ldloc</seealso>
-	    /// <seealso cref="System.Reflection.Emit.ILGenerator.Emit(OpCode,short)">ILGenerator.Emit</seealso>
-	    public EmitHelper ldloc(short index)
+        /// Calls ILGenerator.Emit(<see cref="OpCodes.Ldloc"/>, short) that
+        /// load an argument address onto the evaluation stack.
+        /// </summary>
+        /// <param name="index">Index of the local variable value pushed onto the stack.</param>
+        /// <seealso cref="OpCodes.Ldloc">OpCodes.Ldloc</seealso>
+        /// <seealso cref="System.Reflection.Emit.ILGenerator.Emit(OpCode,short)">ILGenerator.Emit</seealso>
+        public EmitHelper ldloc(short index)
         {
             ILGenerator.Emit(OpCodes.Ldloc, index);
             return this;

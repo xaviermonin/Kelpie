@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EntityCore.DynamicEntity.Construction.Helpers.Emitter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -24,16 +25,17 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         {
             var getMethodBuilder = typeBuilder.DefineMethod("get_" + name, attr, type, Type.EmptyTypes);
 
-            var getMethodILGenerator = getMethodBuilder.GetILGenerator();
-            getMethodILGenerator.Emit(OpCodes.Ldarg_0);
-            getMethodILGenerator.Emit(OpCodes.Ldfld, fieldBuilder);
-            getMethodILGenerator.Emit(OpCodes.Ret);
+            var generator = new EmitHelper(getMethodBuilder.GetILGenerator());
+
+            generator.ldarg_0()
+                     .ldfld(fieldBuilder)
+                     .ret();
 
             return getMethodBuilder;
         }
 
         /// <summary>
-        /// Create a setter method for property that affected the field property
+        /// Create a setter method for property that assign the field property
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="attr"></param>
@@ -75,48 +77,18 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
             return method;
         }
 
-        /// <summary>
-        /// Create a getter method for property with explicit implementation
-        /// </summary>
-        /// <param name="typeBuilder"></param>
-        /// <param name="name"></param>
-        /// <param name="returnType"></param>
-        /// <param name="interfaceType"></param>
-        /// <returns></returns>
-        static public MethodBuilder CreateGetMethodExplImpl(TypeBuilder typeBuilder, string name,
-                                                            Type returnType, Type interfaceType)
+        static public MethodBuilder CreateExplImplMethod(TypeBuilder typeBuilder, string name,
+                                                         Type returnType, Type interfaceType,
+                                                         Type[] parameterTypes)
         {
-            MethodInfo interfaceMethod = interfaceType.GetMethod("get_" + name);
+            MethodInfo interfaceMethod = interfaceType.GetMethod(name);
 
-            var method = typeBuilder.DefineMethod(string.Format("get_{0}.{1}", interfaceType.FullName, name),
-                                                  ExplicitImplementation, returnType, Type.EmptyTypes);
-
-            method.SetReturnType(returnType);
+            var method = typeBuilder.DefineMethod(string.Format("{0}.{1}", interfaceType.FullName, name),
+                                                  ExplicitImplementation, returnType, parameterTypes);
 
             typeBuilder.DefineMethodOverride(method, interfaceMethod);
 
             return method;
-        }
-
-        /// <summary>
-        /// Create a setter method for property with explicit implementation
-        /// </summary>
-        /// <param name="typeBuilder"></param>
-        /// <param name="name"></param>
-        /// <param name="type"></param>
-        /// <param name="interfaceType"></param>
-        /// <returns></returns>
-        static public MethodBuilder CreateSetMethodExplImpl(TypeBuilder typeBuilder, string name,
-                                                            Type type, Type interfaceType)
-        {
-            MethodInfo interfaceMethod = interfaceType.GetMethod("set_" + name);
-
-            var methodBuilder = typeBuilder.DefineMethod(string.Format("set_{0}.{1}", interfaceType.FullName, name),
-                                                         ExplicitImplementation, null, new[] { type });
-
-            typeBuilder.DefineMethodOverride(methodBuilder, interfaceMethod);
-
-            return methodBuilder;
         }
 
         /// <summary>

@@ -62,10 +62,18 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
                                                                          PropertyAttributes.HasDefault, propertyType, null);
 
             if ((propertyGetSet & PropertyGetSet.Get) == PropertyGetSet.Get)
-                propertyBuilder.SetGetMethod(MethodHelper.CreateGetMethodExplImpl(typeBuilder, name, propertyType, interfaceType));
-
+            {
+                var getMethod = MethodHelper.CreateExplImplMethod(typeBuilder, "get_" + name,
+                                                                  propertyType, interfaceType, Type.EmptyTypes);
+                propertyBuilder.SetGetMethod(getMethod);
+            }
+            
             if ((propertyGetSet & PropertyGetSet.Set) == PropertyGetSet.Set)
-                propertyBuilder.SetSetMethod(MethodHelper.CreateSetMethodExplImpl(typeBuilder, name, propertyType, interfaceType));
+            {
+                var setMethod = MethodHelper.CreateExplImplMethod(typeBuilder, "set_" + name, null,
+                                                                  interfaceType, new Type[] { propertyType });
+                propertyBuilder.SetSetMethod(setMethod);
+            }
 
             return propertyBuilder;
         }
