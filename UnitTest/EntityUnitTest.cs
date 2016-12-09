@@ -1,30 +1,29 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EntityCore;
-using System.Data.Entity.Validation;
-using EntityCore.DynamicEntity;
-using EntityCore.Proxy.Metadata;
-using System.Collections.Generic;
+﻿using EntityCore.DynamicEntity;
 using EntityCore.Entity;
-using System.Data.Entity;
+using EntityCore.Proxy.Metadata;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace UnitTest
 {
-    public interface IUserFirstName
-    {
-        string Firstname { get; set; }
-        string Lastname { get; set; }
-    }
-
-    public interface IUserLastName
-    {
-        string Lastname { get; set; }
-    }
-
     [TestClass]
     public class EntityUnitTest
     {
+        public interface IUser
+        {
+            string Firstname { get; set; }
+            string Lastname { get; set; }
+        }
+
+        public interface IUserLastNameOnly
+        {
+            string Lastname { get; set; }
+        }
+
         private DynamicEntityContext entityContext;
 
         [TestInitialize]
@@ -41,137 +40,54 @@ namespace UnitTest
         }
 
         [TestMethod]
-        [TestCategory("Proxy")]
-        public void RetrieveNavigationPropertyWithLazyLoading()
-        {
-            Assert.IsTrue(entityContext.Configuration.LazyLoadingEnabled);
-            var attribute = entityContext.ProxySet<IAttribute>("Attribute").First();
-
-            Assert.IsNotNull(attribute.Entity);
-            Assert.IsInstanceOfType(attribute.Entity, typeof(IEntity));
-
-            Assert.IsNotNull(attribute.Type);
-            Assert.IsNotNull(attribute.Type.Attributes);
-            Assert.IsNotNull(attribute.Type.Attributes.FirstOrDefault());
-
-            Assert.IsNotNull(attribute.Entity.Proxies);
-            Assert.IsNotNull(attribute.Entity.Proxies.FirstOrDefault());
-        }
-
-        [TestMethod]
-        [TestCategory("Proxy")]
-        public void RetrieveSingleProxyEntity()
-        {
-            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType")
-                                                     .Where(c => c.ClrName == "System.String")
-                                                     .Single();
-
-            Assert.AreEqual(stringType.ClrName, "System.String");
-            Assert.AreEqual(stringType.SqlServerName, "nvarchar");
-        }
-
-        [TestMethod]
-        [TestCategory("Proxy")]
-        public void RetrieveIncludedProxyEntity()
-        {
-            var attributesUsingStringType = entityContext.ProxySet<IAttributeType>("AttributeType")
-                                                            .Include(c => c.Attributes)
-                                                            .Where(c => c.ClrName == "System.String")
-                                                            .OrderBy(c => c.Id)
-                                                            .SelectMany(c => c.Attributes)
-                                                            .ToArray();
-
-            Assert.IsInstanceOfType(attributesUsingStringType, typeof(IAttribute[]));
-            Assert.AreEqual(attributesUsingStringType.Length, 7);
-            Assert.IsNotNull(attributesUsingStringType.FirstOrDefault());
-        }
-
-        [TestMethod]
-        [TestCategory("Proxy")]
-        public void ManyToOneNavigation()
-        {
-            var attributeName = entityContext.ProxySet<IAttribute>("Attribute")
-                                            .Include(c => c.Entity)
-                                            .Where(c => c.Name == "Name" &&
-                                                        c.Entity.Name == "Entity")
-                                            .Single();
-
-            Assert.AreEqual(attributeName.Name, "Name");
-            Assert.IsNotNull(attributeName.Entity);
-            Assert.AreEqual(attributeName.Entity.Name, "Entity");
-            Assert.IsFalse(attributeName.IsNullable.Value);
-            Assert.IsTrue(attributeName.Entity.Managed.Value);
-        }
-
-        [TestMethod]
-        [TestCategory("Proxy")]
-        public void OneToManyNavigation()
-        {
-            var entity = entityContext.ProxySet<IEntity>("Entity")
-                                        .Include(c => c.Attributes)
-                                        .Where(c => c.Name == "Entity")
-                                        .Single();
-
-            Assert.IsNotNull(entity.Attributes);
-            Assert.AreEqual(entity.Attributes.Count, 5);
-
-            var nameAttribute = entity.Attributes.Where(c => c.Name == "Name")
-                                                    .Single();
-
-            Assert.AreEqual(nameAttribute.Name, "Name");
-        }
-
-        [TestMethod]
         public void CreateEntity()
         {
-            /*ICollection<EntityCore.Proxy.IBaseEntity> a = new HashSet<AttributeTest>();
-            ICollection<EntityCore.Proxy.Metadata.IAttribute> b = a as ICollection<EntityCore.Proxy.Metadata.IAttribute>;*/
+            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType")
+                                                     .Single(attr => attr.ClrName == "System.String");
+            IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType")
+                                                     .Single(attr => attr.ClrName == "System.Int32");
 
-            /*
-            IEntity userEntity = entityContext.Create<IEntity>("Entity");
+            var userEntity = entityContext.Create<IEntity>("Entity");
             userEntity.Name = "User";
-            userEntity.Description = "Contains all users";
-            userEntity.Attributes.Add(new EntityCore.Models.Attribute()
-            {
-                Name = "Firstname",
-                Type = stringType,
-                IsNullable = true,
-                Length = 50
-            });
-            userEntity.Attributes.Add(new EntityCore.Models.Attribute()
-            {
-                Name = "Lastname",
-                Type = stringType,
-                IsNullable = true,
-                Length = 50
-            });
-            userEntity.Attributes.Add(new EntityCore.Models.Attribute()
-            {
-                Name = "Age",
-                Type = intType,
-                IsNullable = true
-            });
+            userEntity.Description = "Contains some users";
 
-            Interface userInterfaceLastname = new Interface()
-            {
-                Entity = userEntity,
-                FullyQualifiedTypeName = typeof(IUserLastName).AssemblyQualifiedName
-            };
+            var firstNameAttribute = entityContext.Create<IAttribute>("Attribute");
+            firstNameAttribute.Name = "Firstname";
+            firstNameAttribute.Type = stringType;
+            firstNameAttribute.IsNullable = true;
+            firstNameAttribute.Length = 50;
 
-            Interface userInterfaceFirstname = new Interface()
-            {
-                Entity = userEntity,
-                FullyQualifiedTypeName = typeof(IUserFirstName).AssemblyQualifiedName
-            };
+            var lastNameAttribute = entityContext.Create<IAttribute>("Attribute");
+            lastNameAttribute.Name = "Lastname";
+            lastNameAttribute.Type = stringType;
+            lastNameAttribute.IsNullable = true;
+            lastNameAttribute.Length = 50;
 
-            string query = EntityCore.DynamicEntity.EntityDatabaseStructure.GenerateCreateTableSqlQuery(userEntity);
+            var ageAttribute = entityContext.Create<IAttribute>("Attribute");
+            ageAttribute.Name = "Age";
+            ageAttribute.Type = intType;
+            ageAttribute.IsNullable = true;
 
-            entityContext.MetadataContext.Entities.Add(userEntity);
-            entityContext.MetadataContext.Interfaces.Add(userInterfaceLastname);
-            entityContext.MetadataContext.Interfaces.Add(userInterfaceFirstname);
+            userEntity.Attributes.Add(firstNameAttribute);
+            userEntity.Attributes.Add(lastNameAttribute);
+            userEntity.Attributes.Add(ageAttribute);
+
+            var userLastnameOnlyProxy = entityContext.Create<IProxy>("Proxy");
+            userLastnameOnlyProxy.Entity = userEntity;
+            userLastnameOnlyProxy.FullyQualifiedTypeName = typeof(IUserLastNameOnly).AssemblyQualifiedName;
+
+            IProxy userProxy = entityContext.Create<IProxy>("Proxy");
+            userProxy.Entity = userEntity;
+            userProxy.FullyQualifiedTypeName = typeof(IUser).AssemblyQualifiedName;
+
+            //string query = EntityDatabaseStructure.GenerateCreateTableSqlQuery(userEntity);
+
+            entityContext.ProxySet<IEntity>("Entity").Add(userEntity);
+            entityContext.ProxySet<IProxy>("Proxy").Add(userProxy);
+            entityContext.ProxySet<IProxy>("Proxy").Add(userLastnameOnlyProxy);
             
-            entityContext.MetadataContext.SaveChanges();
-            entityContext.MetadataContext.Database.ExecuteSqlCommand(query);*/
+            entityContext.SaveChanges();
+            //entityContext.Database.ExecuteSqlCommand(query);
         }
 
         [TestMethod]
@@ -204,15 +120,15 @@ namespace UnitTest
         {
             DynamicEntityContext context = new DynamicEntityContext("name=DataDbContext");
 
-            var usersSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUserFirstName>;
+            var usersSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUser>;
             var xavierFirstName = usersSet.Where(u => u.Firstname == "Xavier").Single();
 
-            var xavierLastName = xavierFirstName as IUserLastName;
+            var xavierLastName = xavierFirstName as IUserLastNameOnly;
 
             Assert.AreEqual(xavierFirstName.Firstname, "Xavier");
             Assert.AreEqual(xavierLastName.Lastname, "Monin");
 
-            var usersLastNameSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUserLastName>;
+            var usersLastNameSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUserLastNameOnly>;
             xavierLastName = usersLastNameSet.Where(u => u.Lastname == "Hammana").Single();
 
             Assert.AreEqual(xavierLastName.Lastname, "Hammana");

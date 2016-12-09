@@ -60,6 +60,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="EntityUnitTest.cs" />
+    <Compile Include="ProxyUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
