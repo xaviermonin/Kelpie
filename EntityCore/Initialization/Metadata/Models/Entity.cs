@@ -42,11 +42,11 @@ namespace EntityCore.Initialization.Metadata.Models
             set { SetProperty(ref _metadata, value); }
         }
 
-        private bool _isAssociation;
-        public bool IsAssociation
+        private bool _association;
+        public bool Association
         {
-            get { return _isAssociation; }
-            set { SetProperty(ref _isAssociation, value); }
+            get { return _association; }
+            set { SetProperty(ref _association, value); }
         }
 
         public virtual ICollection<Attribute> Attributes { get; set; }

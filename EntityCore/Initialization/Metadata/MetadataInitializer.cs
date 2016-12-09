@@ -57,11 +57,14 @@ namespace EntityCore.Initialization.Metadata
             Models.Entity entityEntity = null;
             Models.Entity attributeTypeEntity = null;
             Models.Entity attributeEntity = null;
+            Models.Entity proxyEntity = null;
 
             entities.Add(entityEntity = new Models.Entity()
             {
                 Name = "Entity",
                 Description = "Describe an entity",
+                Managed = true,
+                Metadata = true,
                 Attributes =
                 {
                     new Models.Attribute()
@@ -81,6 +84,20 @@ namespace EntityCore.Initialization.Metadata
                     new Models.Attribute()
                     {
                         Name = "Managed",
+                        IsNullable = true,
+                        Type = boolType,
+                        Managed = true,
+                    },
+                    new Models.Attribute()
+                    {
+                        Name = "Metadata",
+                        IsNullable = true,
+                        Type = boolType,
+                        Managed = true,
+                    },
+                    new Models.Attribute()
+                    {
+                        Name = "Association",
                         IsNullable = true,
                         Type = boolType,
                         Managed = true,
@@ -196,7 +213,7 @@ namespace EntityCore.Initialization.Metadata
 
             // Proxy
 
-            entities.Add(new Models.Entity()
+            entities.Add(proxyEntity = new Models.Entity()
                 {
                     Name = "Proxy",
                     Description = "Describe a proxy",
@@ -204,7 +221,7 @@ namespace EntityCore.Initialization.Metadata
                     {
                         new Models.Attribute()
                         {
-                            Name = "FullyQualfiedTypeName",
+                            Name = "FullyQualifiedTypeName",
                             IsNullable = true,
                             Type = stringType,
                             Managed = true,
@@ -220,6 +237,15 @@ namespace EntityCore.Initialization.Metadata
                         },
                     }
                 });
+
+            proxyEntity.ManyToOneRelationships.Add(new Models.Relationship()
+            {
+                Name = "Entity",
+                One = entityEntity,
+                OneNavigationName = "Entity",
+                Many = proxyEntity,
+                ManyNavigationName = "Proxies"
+            });
 
             #endregion
 
@@ -237,6 +263,20 @@ namespace EntityCore.Initialization.Metadata
                 Entity = attributeEntity,
                 Managed = true,
                 FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IAttribute).AssemblyQualifiedName
+            });
+
+            proxies.Add(new Models.Proxy()
+            {
+                Entity = entityEntity,
+                Managed = true,
+                FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IEntity).AssemblyQualifiedName
+            });
+
+            proxies.Add(new Models.Proxy()
+            {
+                Entity = proxyEntity,
+                Managed = true,
+                FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IProxy).AssemblyQualifiedName
             });
 
             #endregion
