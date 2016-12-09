@@ -41,7 +41,7 @@ namespace EntityCore.Proxy.Metadata
         [BindedNavigationProperty]
         IAttributeType Type { get; set; }
 
-        /*[BindedNavigationProperty]
-        IEntity Entity { get; set; }*/
+        [BindedNavigationProperty]
+        IEntity Entity { get; set; }
     }
 }

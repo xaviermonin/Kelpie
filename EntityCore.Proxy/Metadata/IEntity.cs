@@ -16,13 +16,16 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        bool Managed
+        bool? Managed
         {
             get;
             set;
         }
 
-        ICollection<IAttribute> Attributes { get; set; }
-        ICollection<IProxy> Proxies { get; set; }
+        [BindedNavigationProperty]
+        ICollection<IAttribute> Attributes { get; }
+
+        [BindedNavigationProperty]
+        ICollection<IProxy> Proxies { get; }
     }
 }
