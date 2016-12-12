@@ -58,7 +58,7 @@
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\FieldHelper.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\MethodHelper.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\PropertyHelper.cs" />
-    <Compile Include="DynamicEntity\Construction\Workshops\BindedNavigationPropertyWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\ProxyNavigationPropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\EntityInitializationWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshopResult.cs" />

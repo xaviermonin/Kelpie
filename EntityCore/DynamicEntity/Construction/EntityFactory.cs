@@ -24,7 +24,7 @@ namespace EntityCore.DynamicEntity.Construction
             workshops.Add(new EntityInitializationWorkshop(this));
             workshops.Add(new PropertyWorkshop(this));
             workshops.Add(new NavigationPropertyWorkshop(this));
-            workshops.Add(new BindedNavigationPropertyWorkshop(this));
+            workshops.Add(new ProxyNavigationPropertyWorkshop(this));
         }
 
         public IEnumerable<JobBag> JobBags
