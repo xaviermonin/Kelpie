@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Experience
+namespace ProtoLab
 {
     public interface IWheel
     {
@@ -11,7 +11,7 @@ namespace Experience
 
         int Size { get; set; }
 
-        ICar Proprietaire { get; set; }
+        ICar Owner { get; set; }
 
         ICar GetProprietaire();
         void SetProprietaire(ICar car);

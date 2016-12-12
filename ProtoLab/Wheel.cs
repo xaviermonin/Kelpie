@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Experience
+namespace ProtoLab
 {
     class Wheel : IWheel
     {
@@ -18,7 +18,7 @@ namespace Experience
         public Car Proprietaire { get; set; }
 
         [NotMapped]
-        ICar IWheel.Proprietaire
+        ICar IWheel.Owner
         {
             get
             {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Experience
+namespace ProtoLab
 {
     /// <summary>
     /// Bind to an ICollection of an other type

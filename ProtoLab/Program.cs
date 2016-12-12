@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 
-namespace Experience
+namespace ProtoLab
 {
     class Program
     {
@@ -47,6 +47,20 @@ namespace Experience
             }
         }
 
+        static private void TestCreateWeels()
+        {
+            Context context = new Context("name=DataDbContext");
+
+            ICar car = (context.Cars as IQueryable<ICar>).First();
+
+            IWheel wheel = new Wheel();
+            wheel.Owner = car;
+            wheel.Size = 10;
+
+            context.Wheels.Add(wheel as Wheel);
+            context.SaveChanges();
+        }
+
         static private void TestTypeBuilder()
         {
             AssemblyName assemblyName = new AssemblyName();
@@ -74,6 +88,7 @@ namespace Experience
         {
             TestProxies();
             TestTypeBuilder();
+            TestCreateWeels();
         }
     }
 }

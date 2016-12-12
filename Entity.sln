@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore.Proxy", "EntityCore.Proxy\EntityCore.Proxy.csproj", "{9297BCED-B93E-4C04-9488-8FA3D4B9C702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoLab", "Experience\ProtoLab.csproj", "{6745C38A-E626-40B0-8C3E-B17A0614FCFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoLab", "ProtoLab\ProtoLab.csproj", "{6745C38A-E626-40B0-8C3E-B17A0614FCFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
