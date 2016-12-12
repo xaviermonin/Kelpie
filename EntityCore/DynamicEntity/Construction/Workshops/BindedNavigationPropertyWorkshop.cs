@@ -28,7 +28,8 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
             public Type NavigationType { get; set; }
             public string PropertyName { get; set; }
             public Type DeclaringType { get; set; }
-            public MethodInfo Method { get; set; }
+            public MethodInfo GetMethod { get; set; }
+            public MethodInfo SetMethod { get; set; }
         }
 
         protected override Result DoWork(Models.Entity entity, TypeBuilder typeBuilder)
@@ -90,7 +91,8 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
                 DeclaringType = navPropertyBuilder.Value.DeclaringType,
                 NavigationType = navPropertyBuilder.Value.PropertyType,
                 PropertyName = GetEntityPropName(proxyNavProp),
-                Method = navPropertyBuilder.Value.GetMethod
+                GetMethod = navPropertyBuilder.Value.GetMethod,
+                SetMethod = navPropertyBuilder.Value.SetMethod
             };
 
             CreateManyToOneProperty(typeBuilder, proxyNavInfo, entityNavInfo);
@@ -113,7 +115,7 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
             var generator = new EmitHelper(getMethod.GetILGenerator());
 
             generator.ldarg_0()
-                     .call(entityNavInfo.Method)
+                     .call(entityNavInfo.GetMethod)
                      .ret();
         }
 
@@ -123,7 +125,7 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
 
             generator.ldarg_0()
                      .ldarg_1()
-                     .call(entityNavInfo.Method)
+                     .call(entityNavInfo.SetMethod)
                      .ret();
         }
 
@@ -157,7 +159,8 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
                 DeclaringType = navPropertyBuilder.Value.DeclaringType,
                 NavigationType = navPropertyBuilder.Value.PropertyType,
                 PropertyName = GetEntityPropName(proxyNavProp),
-                Method = navPropertyBuilder.Value.GetGetMethod()
+                GetMethod = navPropertyBuilder.Value.GetGetMethod(),
+                SetMethod = navPropertyBuilder.Value.GetSetMethod()
             };
 
             CreateOneToManyProperty(typeBuilder, proxyNavInfo, entityNavInfo);
@@ -206,7 +209,7 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
                      .brtrue_s(afterInitialisationLabel)    // if (this.bindingCollection == null) {
                      .ldarg_0()
                      .ldarg_0()
-                     .call(entityNavInfo.Method)            // this.NavigationProperty;
+                     .call(entityNavInfo.GetMethod)         // this.NavigationProperty;
                      .newobj(bindingCollectionConstructor)  // new BindingCollection<Entity, IProxy>(<stack>)
                      .stfld(bindingCollectionField)         // this.bindingCollection = <stack>
                      .MarkLabel(afterInitialisationLabel)   // }
