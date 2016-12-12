@@ -243,6 +243,17 @@ namespace EntityCore.DynamicEntity.Construction.Helpers.Emitter
         }
 
         /// <summary>
+        /// Calls ILGenerator.Emit(<see cref="OpCodes.Isinst"/>) that
+        /// Tests whether an object reference (type O) is an instance of a particular class.
+        /// </summary>
+        /// <param name="type">Tested Type</param>
+        public EmitHelper isinst(Type type)
+        {
+            ILGenerator.Emit(OpCodes.Isinst, type);
+            return this;
+        }
+
+        /// <summary>
         /// Calls ILGenerator.Emit(<see cref="OpCodes.Ldarg_2"/>) that
         /// loads the argument at index 2 onto the evaluation stack.
         /// </summary>
