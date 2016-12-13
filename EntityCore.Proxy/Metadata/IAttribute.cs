@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace EntityCore.Proxy.Metadata
 {
+    [BindedEntity(Name = "Attribute")]
     public interface IAttribute : IBaseEntity
     {
         string Name
@@ -26,7 +27,7 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        Nullable<int> Length
+        int? Length
         {
             get;
             set;

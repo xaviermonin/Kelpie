@@ -1,4 +1,5 @@
-﻿using EntityCore.DynamicEntity.Event;
+﻿using EntityCore.DynamicEntity.Construction.Helper.Reflection;
+using EntityCore.DynamicEntity.Event;
 using EntityCore.Entity;
 using EntityCore.Proxy;
 using System;
@@ -128,24 +129,77 @@ namespace EntityCore.DynamicEntity
 
 #endregion
 
+        /// <summary>
+        /// Create a new instance of an entity
+        /// from the given entity name.
+        /// </summary>
+        /// <param name="entityName">Entity name</param>
+        /// <returns></returns>
         public BaseEntity Create(string entityName)
         {
             return Set(entityName).Create() as BaseEntity;
         }
 
-        public T Create<T>(string entityName) where T : IBaseEntity
+        /// <summary>
+        /// Create a new instance of an entity
+        /// casted to the given proxy type.
+        /// </summary>
+        /// <typeparam name="TProxy">Proxy type</typeparam>
+        /// <param name="entityName"></param>
+        /// <returns></returns>
+        public TProxy Create<TProxy>(string entityName) where TProxy : IBaseEntity
         {
-            return (T)(Set(entityName).Create());
+            return (TProxy)(Set(entityName).Create());
         }
 
+        /// <summary>
+        /// Create an entity record.
+        /// The entity name is got from
+        /// the <see cref="BindedEntityAttribute"/> of the proxy type.
+        /// </summary>
+        /// <typeparam name="TProxy">Proxy type</typeparam>
+        /// <returns></returns>
+        public TProxy Create<TProxy>() where TProxy : IBaseEntity
+        {
+            var bindedName = TypeHelper.GetCustomAttribute<BindedEntityAttribute>(typeof(TProxy));
+            return (TProxy)(Set(bindedName.Name).Create());
+        }
+
+        /// <summary>
+        /// Return a non-generic <see cref="EntityDbSet{TEntity}"/> instance
+        /// for access to entities of the given entity name.
+        /// </summary>
+        /// <param name="entityName"></param>
+        /// <returns></returns>
         public DbSet Set(string entityName)
         {
             return Set(_tables[entityName]);
         }
 
+        /// <summary>
+        /// Return a <see cref="EntityDbSet{TEntity}"/> instance
+        /// for access to entities via a proxy inherited from <see cref="IBaseEntity"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entityName">Entity name</param>
+        /// <returns></returns>
         public EntityDbSet<T> ProxySet<T>(string entityName) where T : class, IBaseEntity
         {
-            return new EntityDbSet<T>(Set(_tables[entityName]));
+            return new EntityDbSet<T>(Set(entityName));
+        }
+
+        /// <summary>
+        /// Return a <see cref="EntityDbSet{TEntity}"/> instance
+        /// for access to entities via a proxy inherited from <see cref="IBaseEntity"/>.
+        /// The entity name is got from
+        /// the <see cref="BindedEntityAttribute"/> of the proxy type.
+        /// </summary>
+        /// <typeparam name="T">Proxy type inherited from <seealso cref="IBaseEntity"/></typeparam>
+        /// <returns></returns>
+        public EntityDbSet<T> ProxySet<T>() where T : class, IBaseEntity
+        {
+            var bindedName = TypeHelper.GetCustomAttribute<BindedEntityAttribute>(typeof(T));
+            return new EntityDbSet<T>(Set(bindedName.Name));
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace EntityCore.Proxy.Metadata
 {
+    [BindedEntity(Name = "Proxy")]
     public interface IProxy : IBaseEntity
     {
         [BindedNavigationProperty]

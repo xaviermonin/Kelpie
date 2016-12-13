@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 namespace EntityCore.Proxy.Metadata
 {
+    [BindedEntity(Name = "Entity")]
     public interface IEntity : IBaseEntity
     {
         string Name

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace EntityCore.Proxy.Metadata
 {
+    [BindedEntity(Name = "AttributeType")]
     public interface IAttributeType : IBaseEntity
     {
         string ClrName

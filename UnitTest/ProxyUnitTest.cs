@@ -109,5 +109,18 @@ namespace UnitTest
 
             Assert.AreEqual(nameAttribute.Name, "Name");
         }
+
+        [TestMethod]
+        [TestCategory("Proxy")]
+        public void BindedEntity()
+        {
+            var attributeEntity = entityContext.ProxySet<IEntity>()
+                                               .Where(e => e.Name == "Attribute")
+                                               .Single();
+
+            Assert.IsInstanceOfType(attributeEntity, typeof(IEntity));
+            Assert.AreEqual(attributeEntity.Name, "Attribute");
+            Assert.IsTrue(attributeEntity.Managed.Value);
+        }
     }
 }

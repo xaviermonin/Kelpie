@@ -72,5 +72,15 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
             // Report whether TypeToTest is a form of the Nullable<> type
             return typeToTest.IsGenericType && typeToTest.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
+
+        /// <summary>
+        /// Get the custom attribute of an type
+        /// </summary>
+        /// <param name="proxyNavProp">PropertyInfo</param>
+        /// <returns></returns>
+        public static TAttribute GetCustomAttribute<TAttribute>(Type type) where TAttribute : Attribute
+        {
+            return ((TAttribute)type.GetCustomAttribute(typeof(TAttribute)));
+        }
     }
 }
