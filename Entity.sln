@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore", "EntityCore\EntityCore.csproj", "{42314E0C-81C6-4D3E-8E1F-F4D7D39AADEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore", "Core\EntityCore\EntityCore.csproj", "{42314E0C-81C6-4D3E-8E1F-F4D7D39AADEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{36A6A28C-5CE5-4277-AC9A-E646BFFAA184}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore", "Test\EntityCore\EntityCore.csproj", "{36A6A28C-5CE5-4277-AC9A-E646BFFAA184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore.Proxy", "EntityCore.Proxy\EntityCore.Proxy.csproj", "{9297BCED-B93E-4C04-9488-8FA3D4B9C702}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCore.Proxy", "Core\EntityCore.Proxy\EntityCore.Proxy.csproj", "{9297BCED-B93E-4C04-9488-8FA3D4B9C702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoLab", "ProtoLab\ProtoLab.csproj", "{6745C38A-E626-40B0-8C3E-B17A0614FCFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoLab", "Lab\ProtoLab\ProtoLab.csproj", "{6745C38A-E626-40B0-8C3E-B17A0614FCFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{888743F8-DAFD-4EFC-8730-EAF932042434}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab", "Lab", "{F5124D8F-D121-415A-9FEA-4F6CE5DB5957}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{20A002B2-D0A7-4AF0-B560-3E9E04A9B72E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +42,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42314E0C-81C6-4D3E-8E1F-F4D7D39AADEA} = {888743F8-DAFD-4EFC-8730-EAF932042434}
+		{36A6A28C-5CE5-4277-AC9A-E646BFFAA184} = {20A002B2-D0A7-4AF0-B560-3E9E04A9B72E}
+		{9297BCED-B93E-4C04-9488-8FA3D4B9C702} = {888743F8-DAFD-4EFC-8730-EAF932042434}
+		{6745C38A-E626-40B0-8C3E-B17A0614FCFB} = {F5124D8F-D121-415A-9FEA-4F6CE5DB5957}
 	EndGlobalSection
 EndGlobal
