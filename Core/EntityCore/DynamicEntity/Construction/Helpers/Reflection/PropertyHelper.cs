@@ -18,13 +18,17 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
         
         /// <summary>
-        /// Create a property (get and set) with backing field.
+        /// Create a property (get and set) with backing field implementation:
+        /// Type PropertyName {
+        ///     get; set;
+        /// }
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="propertyName"></param>
         /// <param name="propertyType"></param>
         /// <returns></returns>
-        static public PropertyBuilder CreateFullProperty(TypeBuilder typeBuilder, string propertyName, Type propertyType)
+        static public PropertyBuilder CreateAutoProperty(TypeBuilder typeBuilder, string propertyName,
+                                                                     Type propertyType, PropertyGetSet propertyGetSet)
         {
             FieldBuilder fieldBuilder = FieldHelper.CreatePrivateField(typeBuilder, propertyType, propertyName);
 
@@ -33,10 +37,17 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
             MethodAttributes getterAndSetterAttributes = MethodAttributes.Public | MethodAttributes.SpecialName |
                                                          MethodAttributes.HideBySig | MethodAttributes.Virtual;
 
-            // Creates the Get Method for the property
-            propertyBuilder.SetGetMethod(MethodHelper.CreateGetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
-            // Creates the Set Method for the property and also adds the invocation of the property change
-            propertyBuilder.SetSetMethod(MethodHelper.CreateSetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
+            if ((propertyGetSet & PropertyGetSet.Get) == PropertyGetSet.Get)
+            {
+                // Creates the Get Method for the property
+                propertyBuilder.SetGetMethod(MethodHelper.CreateGetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
+            }
+
+            if ((propertyGetSet & PropertyGetSet.Set) == PropertyGetSet.Set)
+            {
+                // Creates the Set Method for the property
+                propertyBuilder.SetSetMethod(MethodHelper.CreateSetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
+            }
 
             return propertyBuilder;
         }

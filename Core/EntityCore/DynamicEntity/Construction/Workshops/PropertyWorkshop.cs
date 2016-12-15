@@ -43,7 +43,8 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
             else
                 fieldType = Type.GetType(attribute.Type.ClrName);
 
-            var propertyBuilder = PropertyHelper.CreateFullProperty(typeBuilder, attribute.Name, fieldType);
+            var propertyBuilder = PropertyHelper.CreateAutoProperty(typeBuilder, attribute.Name,
+                                                                    fieldType, PropertyHelper.PropertyGetSet.Both);
 
             //add the various WCF and EF attributes to the property
             AddDataMemberAttribute(propertyBuilder);

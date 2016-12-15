@@ -326,5 +326,5 @@ namespace EntityCore.DynamicEntity.Construction.Helpers.Emitter
         }
 
         #endregion
-}
+    }
 }
