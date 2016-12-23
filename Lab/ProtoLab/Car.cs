@@ -12,22 +12,35 @@ namespace ProtoLab
     {
         public Car()
         {
-            this.Roues = new HashSet<Wheel>();
         }
+
+        private ICollection<Wheel> _wheels;
 
         [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public ICollection<Wheel> Roues { get; private set; }
+        public ICollection<Wheel> Wheels {
+            get
+            {
+                if (_wheels == null)
+                    _wheels = new HashSet<Wheel>();
+
+                return _wheels;
+            }
+            private set
+            {
+                _wheels = value;
+            }
+        }
 
         private BindingCollection<Wheel, IWheel> bindingCollectionRoues;
 
         ICollection<IWheel> ICar.Test()
         {
                 if (bindingCollectionRoues == null)
-                    bindingCollectionRoues = new BindingCollection<Wheel, IWheel>(this.Roues);
+                    bindingCollectionRoues = new BindingCollection<Wheel, IWheel>(this.Wheels);
 
                 return bindingCollectionRoues;
         }
@@ -37,7 +50,7 @@ namespace ProtoLab
         {
             get {
                 if (bindingCollectionRoues == null)
-                    bindingCollectionRoues = new BindingCollection<Wheel, IWheel>(this.Roues);
+                    bindingCollectionRoues = new BindingCollection<Wheel, IWheel>(this.Wheels);
 
                 return bindingCollectionRoues;
             }
