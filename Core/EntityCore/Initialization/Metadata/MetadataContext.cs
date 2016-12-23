@@ -1,5 +1,6 @@
 ﻿using EntityCore.Entity;
 using EntityCore.Initialization.Metadata;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Models = EntityCore.Initialization.Metadata.Models;
@@ -10,6 +11,17 @@ namespace EntityCore
     {
         public MetadataContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
+        {
+            SetInitializer();
+        }
+
+        public MetadataContext(DbConnection existingConnection, bool contextOwnsConnection)
+            : base(existingConnection, contextOwnsConnection)
+        {
+            SetInitializer();
+        }
+
+        private void SetInitializer()
         {
             Database.SetInitializer(new MetadataInitializer());
         }

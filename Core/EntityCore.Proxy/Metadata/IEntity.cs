@@ -17,7 +17,19 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        bool? Managed
+        bool Managed
+        {
+            get;
+            set;
+        }
+
+        bool Metadata
+        {
+            get;
+            set;
+        }
+
+        bool Association
         {
             get;
             set;

@@ -18,7 +18,7 @@ namespace EntityCore.Proxy.Metadata
             set;
         }
 
-        Nullable<int> DefaultLength
+        int? DefaultLength
         {
             get;
             set;

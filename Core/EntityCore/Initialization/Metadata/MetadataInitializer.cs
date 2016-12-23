@@ -83,21 +83,21 @@ namespace EntityCore.Initialization.Metadata
                     new Models.Attribute()
                     {
                         Name = "Managed",
-                        IsNullable = true,
+                        IsNullable = false,
                         Type = boolType,
                         Managed = true,
                     },
                     new Models.Attribute()
                     {
                         Name = "Metadata",
-                        IsNullable = true,
+                        IsNullable = false,
                         Type = boolType,
                         Managed = true,
                     },
                     new Models.Attribute()
                     {
                         Name = "Association",
-                        IsNullable = true,
+                        IsNullable = false,
                         Type = boolType,
                         Managed = true,
                     },
@@ -149,7 +149,7 @@ namespace EntityCore.Initialization.Metadata
                     new Models.Attribute()
                     {
                         Name = "Managed",
-                        IsNullable = true,
+                        IsNullable = false,
                         Type = boolType,
                         Managed = true,
                         Metadata = true,
@@ -229,7 +229,7 @@ namespace EntityCore.Initialization.Metadata
                         new Models.Attribute()
                         {
                             Name = "Managed",
-                            IsNullable = true,
+                            IsNullable = false,
                             Type = boolType,
                             Managed = true,
                             Metadata = true,

@@ -39,15 +39,15 @@ namespace EntityCore.Initialization.Metadata.Models
             set { SetProperty(ref _length, value); }
         }
 
-        private bool _managed;
-        public bool Managed
+        private bool? _managed;
+        public bool? Managed
         {
             get { return _managed; }
             set { SetProperty(ref _managed, value); }
         }
 
-        private bool _metadata;
-        public bool Metadata
+        private bool? _metadata;
+        public bool? Metadata
         {
             get { return _metadata; }
             set { SetProperty(ref _metadata, value); }

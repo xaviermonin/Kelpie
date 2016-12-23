@@ -27,7 +27,7 @@
             set;
         }
 
-        bool? Managed
+        bool Managed
         {
             get;
             set;

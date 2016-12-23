@@ -26,8 +26,8 @@ namespace EntityCore.Initialization.Metadata.Models
             set { SetProperty(ref _sqlServerName, value); }
         }
 
-        private Nullable<int> _defaultLength;
-        public Nullable<int> DefaultLength
+        private int? _defaultLength;
+        public int? DefaultLength
         {
             get { return _defaultLength; }
             set { SetProperty(ref _defaultLength, value); }
