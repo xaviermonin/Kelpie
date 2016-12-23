@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Data.Common;
+using System.Data.Entity;
 
 namespace EntityCore.Entity
 {
@@ -8,6 +9,12 @@ namespace EntityCore.Entity
             : base(nameOrConnectionString)
         {
 
+        }
+
+        public BaseEntityContext(DbConnection existingConnection, bool contextOwnsConnection)
+            : base(existingConnection, contextOwnsConnection)
+        {
+            
         }
     }
 }

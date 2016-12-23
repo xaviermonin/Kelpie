@@ -1,6 +1,7 @@
 ﻿using EntityCore.DynamicEntity.Construction;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Linq;
 
@@ -10,25 +11,25 @@ namespace EntityCore.DynamicEntity
     {
         static private Dictionary<string, IEnumerable<Type>> typesByDatabase = new Dictionary<string, IEnumerable<Type>>();
 
-        static public IEnumerable<Type> GetEntitiesTypes(string nameOrConnectionString)
+        static public IEnumerable<Type> GetEntitiesTypes(DbConnection dbConnection)
         {
-            if (typesByDatabase.ContainsKey(nameOrConnectionString))
-                return typesByDatabase[nameOrConnectionString];
+            if (typesByDatabase.ContainsKey(dbConnection.ConnectionString))
+                return typesByDatabase[dbConnection.ConnectionString];
 
-            var entitiesTypes = CreateEntitiesTypes(nameOrConnectionString);
-            typesByDatabase.Add(nameOrConnectionString, entitiesTypes);
+            var entitiesTypes = CreateEntitiesTypes(dbConnection);
+            typesByDatabase.Add(dbConnection.ConnectionString, entitiesTypes);
 
             return entitiesTypes;
         }
 
-        static public Type GetEntityType(string nameOrConnectionString, string entityName)
+        static public Type GetEntityType(DbConnection dbConnection, string entityName)
         {
-            return GetEntitiesTypes(nameOrConnectionString).Where(e => e.Name == entityName).Single();
+            return GetEntitiesTypes(dbConnection).Where(e => e.Name == entityName).Single();
         }
 
-        static IEnumerable<Type> CreateEntitiesTypes(string nameOrConnectionString)
+        static IEnumerable<Type> CreateEntitiesTypes(DbConnection existingConnection)
         {
-            using (MetadataContext context = new MetadataContext(nameOrConnectionString))
+            using (MetadataContext context = new MetadataContext(existingConnection, false))
             {
                 DynamicAssemblyBuilder assemblyBuilder = new DynamicAssemblyBuilder();
 

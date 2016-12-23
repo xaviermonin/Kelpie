@@ -4,6 +4,7 @@ using EntityCore.Entity;
 using EntityCore.Proxy;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -20,9 +21,15 @@ namespace EntityCore.DynamicEntity
             InitializeTypes();
         }
 
+        public DynamicEntityContext(DbConnection existingConnection, bool contextOwnsConnection)
+            : base(existingConnection, contextOwnsConnection)
+        {
+            InitializeTypes();
+        }
+
         private void InitializeTypes()
         {
-            foreach (var type in EntityTypeCache.GetEntitiesTypes(this.Database.Connection.ConnectionString))
+            foreach (var type in EntityTypeCache.GetEntitiesTypes(Database.Connection))
                 _tables.Add(type.Name, type);
         }
 
