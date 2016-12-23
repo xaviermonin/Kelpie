@@ -48,6 +48,9 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
 
             //add the various WCF and EF attributes to the property
             AddDataMemberAttribute(propertyBuilder);
+
+            // @todo : Add SQL attribute only for SQL context.
+            // This don't work with Effort
             AddColumnAttribute(propertyBuilder, attribute.Type.SqlServerName);
 
             return propertyBuilder;

@@ -16,7 +16,10 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
             Set = 0x02,
             Both = Get | Set
         }
-        
+
+        private const MethodAttributes GetSetMethodAttributes = MethodAttributes.Public | MethodAttributes.SpecialName |
+                                                                MethodAttributes.HideBySig | MethodAttributes.Virtual;
+
         /// <summary>
         /// Create a property (get and set) with backing field implementation:
         /// Type PropertyName {
@@ -34,19 +37,46 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
 
             PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(propertyName, PropertyAttributes.HasDefault, propertyType, null);
 
-            MethodAttributes getterAndSetterAttributes = MethodAttributes.Public | MethodAttributes.SpecialName |
-                                                         MethodAttributes.HideBySig | MethodAttributes.Virtual;
-
             if ((propertyGetSet & PropertyGetSet.Get) == PropertyGetSet.Get)
             {
                 // Creates the Get Method for the property
-                propertyBuilder.SetGetMethod(MethodHelper.CreateGetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
+                propertyBuilder.SetGetMethod(MethodHelper.CreateGetMethod(typeBuilder, GetSetMethodAttributes,
+                                             propertyName, propertyType, fieldBuilder));
             }
 
             if ((propertyGetSet & PropertyGetSet.Set) == PropertyGetSet.Set)
             {
                 // Creates the Set Method for the property
-                propertyBuilder.SetSetMethod(MethodHelper.CreateSetMethod(typeBuilder, getterAndSetterAttributes, propertyName, propertyType, fieldBuilder));
+                propertyBuilder.SetSetMethod(MethodHelper.CreateSetMethod(typeBuilder, GetSetMethodAttributes,
+                                             propertyName, propertyType, fieldBuilder));
+            }
+
+            return propertyBuilder;
+        }
+
+        /// <summary>
+        /// Create the Set or/and Get property without body.
+        /// </summary>
+        /// <param name="typeBuilder">Type </param>
+        /// <param name="name">Property name</param>
+        /// <param name="propertyType">Property type</param>
+        /// <param name="propertyGetSet">Get or/and Set property</param>
+        /// <returns></returns>
+        static public PropertyBuilder CreateProperty(TypeBuilder typeBuilder, string name,
+                                                     Type propertyType, PropertyGetSet propertyGetSet)
+        {
+            PropertyBuilder propertyBuilder = typeBuilder.DefineProperty(name, PropertyAttributes.HasDefault, propertyType, null);
+
+            if ((propertyGetSet & PropertyGetSet.Get) == PropertyGetSet.Get)
+            {
+                var getMethod = MethodHelper.CreateEmptyGetMethod(typeBuilder, GetSetMethodAttributes, name, propertyType);
+                propertyBuilder.SetGetMethod(getMethod);
+            }
+
+            if ((propertyGetSet & PropertyGetSet.Set) == PropertyGetSet.Set)
+            {
+                var setMethod = MethodHelper.CreateEmptySetMethod(typeBuilder, GetSetMethodAttributes, name, propertyType);
+                propertyBuilder.SetSetMethod(setMethod);
             }
 
             return propertyBuilder;

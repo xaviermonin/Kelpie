@@ -20,7 +20,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         static public MethodBuilder CreateGetMethod(TypeBuilder typeBuilder, MethodAttributes attr,
                                                     string name, Type type, FieldInfo fieldInfo)
         {
-            var getMethodBuilder = typeBuilder.DefineMethod("get_" + name, attr, type, Type.EmptyTypes);
+            var getMethodBuilder = CreateEmptyGetMethod(typeBuilder, attr, name, type);
 
             var generator = new EmitHelper(getMethodBuilder.GetILGenerator());
 
@@ -43,7 +43,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         static public MethodBuilder CreateSetMethod(TypeBuilder typeBuilder, MethodAttributes attr,
                                                     string name, Type type, FieldInfo fieldInfo)
         {
-            var methodBuilder = typeBuilder.DefineMethod("set_" + name, attr, null, new[] { type });
+            var methodBuilder = CreateEmptySetMethod(typeBuilder, attr, name, type);
 
             EmitHelper generator = new EmitHelper(methodBuilder.GetILGenerator());
             generator.ldarg_0()
@@ -52,6 +52,34 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
                      .ret();
 
             return methodBuilder;
+        }
+
+        /// <summary>
+        /// Create a getter method without body
+        /// </summary>
+        /// <param name="typeBuilder"></param>
+        /// <param name="attr"></param>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        static public MethodBuilder CreateEmptyGetMethod(TypeBuilder typeBuilder, MethodAttributes attr,
+                                                         string name, Type type)
+        {
+            return typeBuilder.DefineMethod("get_" + name, attr, type, Type.EmptyTypes);
+        }
+
+        /// <summary>
+        /// Create a setter method without body
+        /// </summary>
+        /// <param name="typeBuilder"></param>
+        /// <param name="attr"></param>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        static public MethodBuilder CreateEmptySetMethod(TypeBuilder typeBuilder, MethodAttributes attr,
+                                                         string name, Type type)
+        {
+            return typeBuilder.DefineMethod("set_" + name, attr, null, new[] { type });
         }
 
         static public MethodBuilder CreateExplImplMethod(TypeBuilder typeBuilder, string name,

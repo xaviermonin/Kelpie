@@ -244,8 +244,8 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
         /// <param name="bindingCollectionField"></param>
         /// <param name="bindingCollectionConstructor"></param>
         private void GenerateOneToManyGetPropertyBody(NavigationInfo entityNavInfo, Type iCollectionProxyType,
-                                                             PropertyBuilder propertyBuilder, FieldInfo bindingCollectionField,
-                                                             ConstructorInfo bindingCollectionConstructor)
+                                                      PropertyBuilder propertyBuilder, FieldInfo bindingCollectionField,
+                                                      ConstructorInfo bindingCollectionConstructor)
         {
             // Generate the following code :
             // if (this.bindingCollection == null)

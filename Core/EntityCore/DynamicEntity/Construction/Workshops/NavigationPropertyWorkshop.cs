@@ -1,8 +1,10 @@
 ﻿using EntityCore.DynamicEntity.Construction.Helper.Reflection;
+using EntityCore.DynamicEntity.Construction.Helpers.Emitter;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using Models = EntityCore.Initialization.Metadata.Models;
 
@@ -51,14 +53,55 @@ namespace EntityCore.DynamicEntity.Construction.Workshops
         {
             var type = knowEntities.Where(c => c.Name == oneToMany.Many.Name).Single();
             var collectionType = typeof(ICollection<>).MakeGenericType(type);
-            PropertyBuilder propertyBuilder = PropertyHelper.CreateAutoProperty(typeBuilder, oneToMany.ManyNavigationName,
-                                                                                collectionType, PropertyHelper.PropertyGetSet.Both);
 
+            var fieldInfo = FieldHelper.CreatePrivateField(typeBuilder, collectionType,
+                                                           $"__navProp_{oneToMany.Many.Name}");
+
+            var propertyBuilder = PropertyHelper.CreateProperty(typeBuilder, oneToMany.ManyNavigationName,
+                                                                collectionType, PropertyHelper.PropertyGetSet.Both);
+
+            var hashSetType = typeof(HashSet<>).MakeGenericType(type);
+
+            var ctors = typeof(HashSet<>).GetConstructor(Type.EmptyTypes);
+            var hashSetConstructor = TypeBuilder.GetConstructor(hashSetType, ctors);
+
+            GenerateOneToManyGetPropertyBody(propertyBuilder.GetMethod as MethodBuilder, fieldInfo, hashSetConstructor);
+            GenerateOneToManySetPropertyBody(propertyBuilder.SetMethod as MethodBuilder, fieldInfo);
+
+            // Apply InverseProperty Attribute
             var inverseProxyAttrConstruct = typeof(InversePropertyAttribute).GetConstructor(new Type[] { typeof(string) });
             var inverseProxyBuilder = new CustomAttributeBuilder(inverseProxyAttrConstruct, new string[] { oneToMany.OneNavigationName });
             propertyBuilder.SetCustomAttribute(inverseProxyBuilder);
 
             return new KeyValuePair<Models.Relationship, PropertyBuilder>(oneToMany, propertyBuilder);
+        }
+
+        private void GenerateOneToManySetPropertyBody(MethodBuilder methodBuilder, FieldBuilder fieldInfo)
+        {
+            var generator = new EmitHelper(methodBuilder.GetILGenerator());
+            generator.ldarg_0()
+                     .ldarg_1()
+                     .stfld(fieldInfo)
+                     .ret();
+        }
+
+        private void GenerateOneToManyGetPropertyBody(MethodBuilder methodBuilder, FieldInfo fieldInfo,
+                                                      ConstructorInfo hashSetConstructor)
+        {
+            var generator = new EmitHelper(methodBuilder.GetILGenerator());
+
+            Label afterInitialization = generator.DefineLabel();
+
+            generator.ldarg_0()
+                     .ldfld(fieldInfo)
+                     .brtrue_s(afterInitialization)
+                     .ldarg_0()
+                     .newobj(hashSetConstructor)
+                     .stfld(fieldInfo)
+                     .MarkLabel(afterInitialization)
+                     .ldarg_0()
+                     .ldfld(fieldInfo)
+                     .ret();
         }
     }
 }
