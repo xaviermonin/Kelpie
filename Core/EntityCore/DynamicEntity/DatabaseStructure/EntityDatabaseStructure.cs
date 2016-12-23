@@ -1,11 +1,11 @@
-﻿using System.Text;
-using Models = EntityCore.Initialization.Metadata.Models;
+﻿using EntityCore.Proxy.Metadata;
+using System.Text;
 
 namespace EntityCore.DynamicEntity
 {
     internal class EntityDatabaseStructure
     {
-        public static string GenerateCreateTableSqlQuery(Models.Entity entity)
+        public static string GenerateCreateTableSqlQuery(IEntity entity)
         {
             var createTable = new StringBuilder();
             createTable.AppendFormat("CREATE TABLE [{0}] (Id int IDENTITY(1,1) NOT NULL, ", entity.Name);
@@ -13,10 +13,10 @@ namespace EntityCore.DynamicEntity
             foreach (var attribute in entity.Attributes)
             {
                 createTable.AppendFormat("{0} {1}{2} {3} {4}, ", attribute.Name,
-                                                                   attribute.Type.SqlServerName,
-                                                                   attribute.Length == null ? string.Empty : "(" + attribute.Length.ToString() + ")",
-                                                                   attribute.IsNullable ? "NULL" : string.Empty,
-                                                                   attribute.DefaultValue != null ? "DEFAULT(" + attribute.DefaultValue + ")" : string.Empty);
+                                                                 attribute.Type.SqlServerName,
+                                                                 attribute.Length == null ? string.Empty : "(" + attribute.Length.ToString() + ")",
+                                                                 (attribute.IsNullable ?? true) ? "NULL" : string.Empty,
+                                                                 attribute.DefaultValue != null ? "DEFAULT(" + attribute.DefaultValue + ")" : string.Empty);
             }
 
             createTable.AppendFormat("CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED", entity.Name);
