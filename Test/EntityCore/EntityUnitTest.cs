@@ -20,16 +20,17 @@ namespace UnitTest
             string Lastname { get; set; }
         }
 
-        private DynamicEntityContext entityContext;
+        private static DynamicEntityContext entityContext;
 
-        [TestInitialize]
-        public void Initialize()
+        [ClassInitialize]
+        public static void Initialize(TestContext context)
         {
-            entityContext = new DynamicEntityContext("name=DataDbContext");
+            entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreateTransient(),
+                                                     true);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        [ClassCleanup]
+        public static void Cleanup()
         {
             entityContext.Dispose();
             entityContext = null;
@@ -76,47 +77,42 @@ namespace UnitTest
             userProxy.Entity = userEntity;
             userProxy.FullyQualifiedTypeName = typeof(IUser).AssemblyQualifiedName;
 
-            //string query = EntityDatabaseStructure.GenerateCreateTableSqlQuery(userEntity);
+            string query = EntityDatabaseStructure.GenerateCreateTableSqlQuery(userEntity);
 
             entityContext.ProxySet<IEntity>("Entity").Add(userEntity);
             entityContext.ProxySet<IProxy>("Proxy").Add(userProxy);
             entityContext.ProxySet<IProxy>("Proxy").Add(userLastnameOnlyProxy);
             
             entityContext.SaveChanges();
-            //entityContext.Database.ExecuteSqlCommand(query);
+            entityContext.Database.ExecuteSqlCommand(query);
         }
 
         [TestMethod]
         public void CreateUsers()
         {
-            DynamicEntityContext context = new DynamicEntityContext("name=DataDbContext");
-            //EntityContext context = new EntityContext("name=DataDbContext");
+            BaseEntity xm = entityContext.Create("User");
 
-            BaseEntity xm = context.Create("User");
-
-            xm.SetAttributeValue("Firstname", "Xavier");
-            xm.SetAttributeValue("Lastname", "Monin");
+            xm.SetAttributeValue("Firstname", "Han");
+            xm.SetAttributeValue("Lastname", "Solo");
             xm.SetAttributeValue("Age", 29);
 
-            context.Set("User").Add(xm);
+            entityContext.Set("User").Add(xm);
 
-            dynamic rh = context.Create("User");
+            dynamic rh = entityContext.Create("User");
 
-            rh.Firstname = "Charles-Henri";
-            rh.Lastname = "Hammana";
-            rh.Age = 29;
+            rh.Firstname = "Obi-Wan";
+            rh.Lastname = "Kenobi";
+            rh.Age = 57;
 
-            context.Set("User").Add(rh);
+            entityContext.Set("User").Add(rh);
 
-            context.SaveChanges();
+            entityContext.SaveChanges();
         }
 
         [TestMethod]
         public void LoadUsers()
         {
-            DynamicEntityContext context = new DynamicEntityContext("name=DataDbContext");
-
-            var usersSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUser>;
+            var usersSet = entityContext.Set("User") as System.Collections.Generic.IEnumerable<IUser>;
             var xavierFirstName = usersSet.Where(u => u.Firstname == "Xavier").Single();
 
             var xavierLastName = xavierFirstName as IUserLastNameOnly;
@@ -124,7 +120,7 @@ namespace UnitTest
             Assert.AreEqual(xavierFirstName.Firstname, "Xavier");
             Assert.AreEqual(xavierLastName.Lastname, "Monin");
 
-            var usersLastNameSet = context.Set("User") as System.Collections.Generic.IEnumerable<IUserLastNameOnly>;
+            var usersLastNameSet = entityContext.Set("User") as System.Collections.Generic.IEnumerable<IUserLastNameOnly>;
             xavierLastName = usersLastNameSet.Where(u => u.Lastname == "Hammana").Single();
 
             Assert.AreEqual(xavierLastName.Lastname, "Hammana");

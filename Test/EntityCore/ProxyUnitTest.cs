@@ -9,16 +9,19 @@ namespace UnitTest
     [TestClass]
     public class ProxyUnitTest
     {
-        private DynamicEntityContext entityContext;
+        private static DynamicEntityContext entityContext;
+        
+        public TestContext TestContext { get; set; }
 
-        [TestInitialize]
-        public void Initialize()
+        [ClassInitialize]
+        public static void Initialize(TestContext context)
         {
-            entityContext = new DynamicEntityContext("name=DataDbContext");
+            entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreateTransient(),
+                                                     true);
         }
 
-        [TestCleanup]
-        public void Cleanup()
+        [ClassCleanup]
+        public static void Cleanup()
         {
             entityContext.Dispose();
             entityContext = null;
@@ -84,7 +87,7 @@ namespace UnitTest
             Assert.IsNotNull(attributeName.Entity);
             Assert.AreEqual(attributeName.Entity.Name, "Entity");
             Assert.IsFalse(attributeName.IsNullable.Value);
-            Assert.IsTrue(attributeName.Entity.Managed.Value);
+            Assert.IsTrue(attributeName.Entity.Managed);
         }
 
         [TestMethod]
@@ -109,13 +112,15 @@ namespace UnitTest
         [TestCategory("Proxy")]
         public void BindedEntity()
         {
+            var r = entityContext.ProxySet<IEntity>();
+
             var attributeEntity = entityContext.ProxySet<IEntity>()
                                                .Where(e => e.Name == "Attribute")
                                                .Single();
 
             Assert.IsInstanceOfType(attributeEntity, typeof(IEntity));
             Assert.AreEqual(attributeEntity.Name, "Attribute");
-            Assert.IsTrue(attributeEntity.Managed.Value);
+            Assert.IsTrue(attributeEntity.Managed);
         }
     }
 }
