@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace EntityCore.DynamicEntity
@@ -210,21 +212,11 @@ namespace EntityCore.DynamicEntity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            var entityMethod = modelBuilder.GetType().GetMethod("Entity");
-
             foreach (var table in _tables)
-            {
-                //modelBuilder.Entity(table.Value);
-                entityMethod.MakeGenericMethod(table.Value).Invoke(modelBuilder, new object[] { });
+                modelBuilder.RegisterEntityType(table.Value);
 
-                /*foreach (var pi in (table.Value).GetProperties())
-                {
-                    if (pi.Name == "Id")
-                        modelBuilder.Entity(table.Value).HasKey(typeof(int), "Id");
-                    else
-                        modelBuilder.Entity(table.Value).StringProperty(pi.Name);
-                }*/
-            }
+            if (!(Database.Connection is SqlConnection))
+                modelBuilder.Conventions.Remove<ColumnAttributeConvention>();
         }
     }
 }

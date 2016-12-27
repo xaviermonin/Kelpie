@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace EntityCore.Initialization.Metadata
 {
-    internal class MetadataInitializer : DropCreateDatabaseAlways<MetadataContext>
+    internal class MetadataInitializer : CreateDatabaseIfNotExists<MetadataContext>
     {
         protected List<Models.AttributeType> attributesTypes = new List<Models.AttributeType>();
         protected List<Models.Entity> entities = new List<Models.Entity>();

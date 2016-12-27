@@ -1,7 +1,9 @@
 ﻿using EntityCore.DynamicEntity;
 using EntityCore.Entity;
+using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTest
@@ -9,28 +11,30 @@ namespace UnitTest
     [TestClass]
     public class EntityUnitTest
     {
-        public interface IUser
+        [BindedEntity(Name = "User")]
+        public interface IUser : IBaseEntity
         {
             string Firstname { get; set; }
             string Lastname { get; set; }
         }
 
-        public interface IUserLastNameOnly
+        public interface IUserLastNameOnly : IBaseEntity
         {
             string Lastname { get; set; }
         }
 
-        private static DynamicEntityContext entityContext;
+        const string ConnectionInstanceId = "42";
+        private DynamicEntityContext entityContext;
 
-        [ClassInitialize]
-        public static void Initialize(TestContext context)
+        [TestInitialize]
+        public void Initialize()
         {
-            entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreateTransient(),
-                                                     true);
+            entityContext = new DynamicEntityContext("Name=DataDbContext"/*Effort.DbConnectionFactory.CreatePersistent(ConnectionInstanceId),
+                                                     true*/);
         }
 
-        [ClassCleanup]
-        public static void Cleanup()
+        [TestCleanup]
+        public void Cleanup()
         {
             entityContext.Dispose();
             entityContext = null;
@@ -43,6 +47,13 @@ namespace UnitTest
                                                      .Single(attr => attr.ClrName == "System.String");
             IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType")
                                                      .Single(attr => attr.ClrName == "System.Int32");
+
+            try
+            {
+                entityContext.ProxySet<IUser>();
+                Assert.Fail("User must be not loaded");
+            }
+            catch (KeyNotFoundException) { }
 
             var userEntity = entityContext.Create<IEntity>("Entity");
             userEntity.Name = "User";
@@ -77,14 +88,18 @@ namespace UnitTest
             userProxy.Entity = userEntity;
             userProxy.FullyQualifiedTypeName = typeof(IUser).AssemblyQualifiedName;
 
-            string query = EntityDatabaseStructure.GenerateCreateTableSqlQuery(userEntity);
-
             entityContext.ProxySet<IEntity>("Entity").Add(userEntity);
             entityContext.ProxySet<IProxy>("Proxy").Add(userProxy);
             entityContext.ProxySet<IProxy>("Proxy").Add(userLastnameOnlyProxy);
             
             entityContext.SaveChanges();
-            entityContext.Database.ExecuteSqlCommand(query);
+
+            try
+            {
+                entityContext.ProxySet<IUser>();
+                Assert.Fail("User must be not loaded");
+            }
+            catch (KeyNotFoundException) { }
         }
 
         [TestMethod]
@@ -112,7 +127,7 @@ namespace UnitTest
         [TestMethod]
         public void LoadUsers()
         {
-            var usersSet = entityContext.Set("User") as System.Collections.Generic.IEnumerable<IUser>;
+            var usersSet = entityContext.Set("User") as IEnumerable<IUser>;
             var xavierFirstName = usersSet.Where(u => u.Firstname == "Xavier").Single();
 
             var xavierLastName = xavierFirstName as IUserLastNameOnly;
