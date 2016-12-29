@@ -5,7 +5,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Models = EntityCore.Initialization.Metadata.Models;
 
-namespace EntityCore
+namespace EntityCore.Initialization.Metadata
 {
     internal partial class MetadataContext : BaseEntityContext
     {
@@ -34,6 +34,7 @@ namespace EntityCore
         public virtual DbSet<Models.Entity> Entities { get; set; }
         public virtual DbSet<Models.Attribute> Attributes { get; set; }
         public virtual DbSet<Models.AttributeType> AttributeTypes { get; set; }
-        public virtual DbSet<Models.Proxy> Interfaces { get; set; }
+        public virtual DbSet<Models.Proxy> Proxies { get; set; }
+        public virtual DbSet<Models.Listener> Listeners { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EntityCore.DynamicEntity.Construction;
+using EntityCore.Initialization.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -34,6 +35,7 @@ namespace EntityCore.DynamicEntity
                 DynamicAssemblyBuilder assemblyBuilder = new DynamicAssemblyBuilder();
 
                 var entities = context.Entities.Include(c => c.Attributes)
+                                               .Include(c => c.Listeners)
                                                .Include(c => c.Proxies)
                                                .Include("Attributes.Type")
                                                .Include(c => c.ManyToOneRelationships)

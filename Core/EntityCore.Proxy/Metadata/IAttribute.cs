@@ -9,7 +9,7 @@
             set;
         }
 
-        bool? IsNullable
+        bool IsNullable
         {
             get;
             set;

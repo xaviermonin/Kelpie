@@ -45,6 +45,7 @@
     <Compile Include="Metadata\IAttribute.cs" />
     <Compile Include="Metadata\IAttributeType.cs" />
     <Compile Include="Metadata\IEntity.cs" />
+    <Compile Include="Metadata\IListener.cs" />
     <Compile Include="Metadata\IProxy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

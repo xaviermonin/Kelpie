@@ -1,6 +1,6 @@
 ﻿using EntityCore.DynamicEntity.Construction.Helper.Reflection;
-using EntityCore.DynamicEntity.Event;
 using EntityCore.Entity;
+using EntityCore.Entity.Event;
 using EntityCore.Proxy;
 using System;
 using System.Collections.Generic;
@@ -52,13 +52,13 @@ namespace EntityCore.DynamicEntity
             {
                 switch (entries.Key)
                 {
-                    case System.Data.Entity.EntityState.Added:
+                    case EntityState.Added:
                         createdEntries = entries;
                         break;
-                    case System.Data.Entity.EntityState.Deleted:
+                    case EntityState.Deleted:
                         deletedEntries = entries;
                         break;
-                    case System.Data.Entity.EntityState.Modified:
+                    case EntityState.Modified:
                         updatedEntries = entries;
                         break;
                     default: System.Diagnostics.Debug.WriteLine("Entry State {0} not supported", entries.Key);
@@ -87,7 +87,7 @@ namespace EntityCore.DynamicEntity
                 return;
 
             foreach (var entry in updatedEntries)
-                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType().Name, this, entry);
+                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType(), this, entry);
         }
 
         private void PostDelete(IEnumerable<DbEntityEntry> deletedEntries)
@@ -96,7 +96,7 @@ namespace EntityCore.DynamicEntity
                 return;
 
             foreach (var entry in deletedEntries)
-                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType().Name, this, entry);
+                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostDelete, entry.Entity.GetType(), this, entry);
         }
 
         private void PostCreate(IEnumerable<DbEntityEntry> createdEntries)
@@ -105,7 +105,7 @@ namespace EntityCore.DynamicEntity
                 return;
 
             foreach (var entry in createdEntries)
-                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType().Name, this, entry);
+                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostCreate, entry.Entity.GetType(), this, entry);
         }
 
         private void PreUpdate(IEnumerable<DbEntityEntry> updatingEntries)
@@ -114,7 +114,7 @@ namespace EntityCore.DynamicEntity
                 return;
 
             foreach (var entry in updatingEntries)
-                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType().Name, this, entry);
+                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PreUpdate, entry.Entity.GetType(), this, entry);
         }
 
         private void PreDelete(IEnumerable<DbEntityEntry> deletingEntries)
@@ -123,7 +123,7 @@ namespace EntityCore.DynamicEntity
                 return;
 
             foreach (var entry in deletingEntries)
-                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType().Name, this, entry);
+                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PreDelete, entry.Entity.GetType(), this, entry);
         }
 
         private void PreCreate(IEnumerable<DbEntityEntry> creatingEntries)
@@ -132,7 +132,7 @@ namespace EntityCore.DynamicEntity
                 return;
 
             foreach (var entry in creatingEntries)
-                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PostUpdate, entry.Entity.GetType().Name, this, entry);
+                EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PreCreate, entry.Entity.GetType(), this, entry);
         }
 
 #endregion

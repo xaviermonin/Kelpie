@@ -1,7 +1,7 @@
 ﻿namespace EntityCore.Proxy.Metadata
 {
-    [BindedEntity(Name = "Proxy")]
-    public interface IProxy : IBaseEntity
+    [BindedEntity(Name = "Listener")]
+    public interface IListener : IBaseEntity
     {
         [BindedNavigationProperty]
         IEntity Entity { get; set; }

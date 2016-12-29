@@ -57,6 +57,7 @@ namespace EntityCore.Initialization.Metadata
             Models.Entity attributeTypeEntity = null;
             Models.Entity attributeEntity = null;
             Models.Entity proxyEntity = null;
+            Models.Entity listenerEntity = null;
 
             entities.Add(entityEntity = new Models.Entity()
             {
@@ -125,7 +126,7 @@ namespace EntityCore.Initialization.Metadata
                     new Models.Attribute()
                     {
                         Name = "IsNullable",
-                        IsNullable = true,
+                        IsNullable = false,
                         Type = boolType,
                         Managed = true,
                         Metadata = true,
@@ -246,6 +247,44 @@ namespace EntityCore.Initialization.Metadata
                 ManyNavigationName = "Proxies"
             });
 
+            // Listener
+
+            entities.Add(listenerEntity = new Models.Entity()
+            {
+                Name = "Listener",
+                Description = "Describe a listener",
+                Managed = true,
+                Metadata = true,
+                Attributes =
+                {
+                    new Models.Attribute()
+                    {
+                        Name = "FullyQualifiedTypeName",
+                        IsNullable = true,
+                        Type = stringType,
+                        Managed = true,
+                        Metadata = true,
+                    },
+                    new Models.Attribute()
+                    {
+                        Name = "Managed",
+                        IsNullable = false,
+                        Type = boolType,
+                        Managed = true,
+                        Metadata = true,
+                    },
+                }
+            });
+
+            listenerEntity.ManyToOneRelationships.Add(new Models.Relationship()
+            {
+                Name = "ListenersToEntity",
+                One = entityEntity,
+                OneNavigationName = "Entity",
+                Many = listenerEntity,
+                ManyNavigationName = "Listeners"
+            });
+
             #endregion
 
             #region Proxies
@@ -278,6 +317,13 @@ namespace EntityCore.Initialization.Metadata
                 FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IProxy).AssemblyQualifiedName
             });
 
+            proxies.Add(new Models.Proxy()
+            {
+                Entity = listenerEntity,
+                Managed = true,
+                FullyQualifiedTypeName = typeof(EntityCore.Proxy.Metadata.IListener).AssemblyQualifiedName
+            });
+
             #endregion
 
             #region Behaviors
@@ -296,7 +342,7 @@ namespace EntityCore.Initialization.Metadata
         {
             context.AttributeTypes.AddRange(attributesTypes);
             context.Entities.AddRange(entities);
-            context.Interfaces.AddRange(proxies);
+            context.Proxies.AddRange(proxies);
 
             context.SaveChanges();
 

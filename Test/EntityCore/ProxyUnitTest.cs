@@ -69,7 +69,7 @@ namespace UnitTest
                                                             .ToArray();
 
             Assert.IsInstanceOfType(attributesUsingStringType, typeof(IAttribute[]));
-            Assert.AreEqual(attributesUsingStringType.Length, 7);
+            Assert.AreEqual(attributesUsingStringType.Length, 8);
             Assert.IsNotNull(attributesUsingStringType.FirstOrDefault());
         }
 
@@ -86,7 +86,7 @@ namespace UnitTest
             Assert.AreEqual(attributeName.Name, "Name");
             Assert.IsNotNull(attributeName.Entity);
             Assert.AreEqual(attributeName.Entity.Name, "Entity");
-            Assert.IsFalse(attributeName.IsNullable.Value);
+            Assert.IsFalse(attributeName.IsNullable);
             Assert.IsTrue(attributeName.Entity.Managed);
         }
 

@@ -77,5 +77,31 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         {
             return ((TAttribute)type.GetCustomAttribute(typeof(TAttribute)));
         }
+
+        /// <summary>
+        /// Determine if two types are same or subclass it.
+        /// </summary>
+        /// <param name="potentialBase"></param>
+        /// <param name="potentialDescendant"></param>
+        /// <returns></returns>
+        public static bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
+        {
+            return IsSubclassOf(potentialBase, potentialDescendant)
+                   || potentialDescendant.Equals(potentialBase);
+        }
+
+        public static bool IsSubclassOf(Type potentialBase, Type potentialDescendant)
+        {
+            if (!potentialDescendant.Equals(potentialBase))
+            {
+                while (potentialDescendant != null)
+                {
+                    if (potentialDescendant.Equals(potentialBase))
+                        return true;
+                    potentialDescendant = potentialDescendant.BaseType;
+                }
+            }
+            return false;
+        }
     }
 }

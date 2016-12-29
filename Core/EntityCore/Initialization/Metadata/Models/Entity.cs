@@ -14,39 +14,34 @@ namespace EntityCore.Initialization.Metadata.Models
             this.ManyToOneRelationships = new HashSet<Relationship>();
         }
 
-        private string _name;
         public string Name
         {
-            get { return _name; }
-            set { SetProperty(ref _name, value); }
+            get;
+            set;
         }
 
-        private string _description;
         public string Description
         {
-            get { return _description; }
-            set { SetProperty(ref _description, value); }
+            get;
+            set;
         }
 
-        private bool _managed;
         public bool Managed
         {
-            get { return _managed; }
-            set { SetProperty(ref _managed, value); }
+            get;
+            set;
         }
 
-        private bool _metadata;
         public bool Metadata
         {
-            get { return _metadata; }
-            set { SetProperty(ref _metadata, value); }
+            get;
+            set;
         }
 
-        private bool _association;
         public bool Association
         {
-            get { return _association; }
-            set { SetProperty(ref _association, value); }
+            get;
+            set;
         }
 
         public virtual ICollection<Attribute> Attributes { get; set; }
@@ -55,5 +50,6 @@ namespace EntityCore.Initialization.Metadata.Models
         public virtual ICollection<Relationship> ManyToOneRelationships { get; set; }
 
         public virtual ICollection<Proxy> Proxies { get; set; }
+        public virtual ICollection<Listener> Listeners { get; set; }
     }
 }

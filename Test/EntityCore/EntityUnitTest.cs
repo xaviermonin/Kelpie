@@ -1,5 +1,8 @@
-﻿using EntityCore.DynamicEntity;
+﻿using EntityCore;
+using EntityCore.DynamicEntity;
 using EntityCore.Entity;
+using EntityCore.Initialization.Metadata;
+using EntityCore.Initialization.Metadata.Models;
 using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,8 +32,58 @@ namespace UnitTest
         [TestInitialize]
         public void Initialize()
         {
-            entityContext = new DynamicEntityContext("Name=DataDbContext"/*Effort.DbConnectionFactory.CreatePersistent(ConnectionInstanceId),
-                                                     true*/);
+            using (var context = new MetadataContext("Name=DataDbContext"))
+            {
+                var stringType = context.AttributeTypes
+                                        .Single(attr => attr.ClrName == "System.String");
+                var intType = context.AttributeTypes
+                                     .Single(attr => attr.ClrName == "System.Int32");
+
+                context.Entities.Add(new Entity()
+                {
+                    Name = "User",
+                    Description = "Contains some users",
+                    Attributes =
+                    {
+                        new Attribute()
+                        {
+                            Name = "Firstname",
+                            Type = stringType,
+                            IsNullable = true,
+                            Length = 50,
+                        },
+                        new Attribute()
+                        {
+                            Name = "Lastname",
+                            Type = stringType,
+                            IsNullable = true,
+                            Length = 50,
+                        },
+                        new Attribute()
+                        {
+                            Name = "Age",
+                            Type = intType,
+                            IsNullable = true,
+                            Length = 50,
+                        },
+                    },
+                    Proxies =
+                    {
+                        new Proxy()
+                        {
+                            FullyQualifiedTypeName = typeof(IUserLastNameOnly).AssemblyQualifiedName,
+                        },
+                        new Proxy()
+                        {
+                            FullyQualifiedTypeName = typeof(IUser).AssemblyQualifiedName,
+                        },
+                    }
+                });
+
+                context.SaveChanges();
+            }
+
+            entityContext = new DynamicEntityContext("Name=DataDbContext");
         }
 
         [TestCleanup]
@@ -135,7 +188,7 @@ namespace UnitTest
             Assert.AreEqual(xavierFirstName.Firstname, "Xavier");
             Assert.AreEqual(xavierLastName.Lastname, "Monin");
 
-            var usersLastNameSet = entityContext.Set("User") as System.Collections.Generic.IEnumerable<IUserLastNameOnly>;
+            var usersLastNameSet = entityContext.Set("User") as IEnumerable<IUserLastNameOnly>;
             xavierLastName = usersLastNameSet.Where(u => u.Lastname == "Hammana").Single();
 
             Assert.AreEqual(xavierLastName.Lastname, "Hammana");
