@@ -13,9 +13,10 @@ using System.Linq;
 
 namespace EntityCore.DynamicEntity
 {
-    public partial class DynamicEntityContext : BaseEntityContext
+    public class DynamicEntityContext : BaseEntityContext
     {
         private Dictionary<string, Type> _tables = new Dictionary<string, Type>();
+        private MetadataRepository _metadataRepository;
 
         public DynamicEntityContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
@@ -33,6 +34,8 @@ namespace EntityCore.DynamicEntity
         {
             foreach (var type in EntityTypeCache.GetEntitiesTypes(Database.Connection))
                 _tables.Add(type.Name, type);
+
+            _metadataRepository = new MetadataRepository(this);
         }
 
         #region Events
@@ -208,6 +211,11 @@ namespace EntityCore.DynamicEntity
         {
             var bindedName = TypeHelper.GetCustomAttribute<BindedEntityAttribute>(typeof(T));
             return new EntityDbSet<T>(Set(bindedName.Name));
+        }
+
+        public MetadataRepository Metadata
+        {
+            get { return _metadataRepository;  }
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

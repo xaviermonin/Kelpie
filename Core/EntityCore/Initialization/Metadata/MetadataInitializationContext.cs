@@ -7,15 +7,15 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.Initialization.Metadata
 {
-    internal partial class MetadataContext : BaseEntityContext
+    internal partial class MetadataInitializationContext : BaseEntityContext
     {
-        public MetadataContext(string nameOrConnectionString)
+        public MetadataInitializationContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
             SetInitializer();
         }
 
-        public MetadataContext(DbConnection existingConnection, bool contextOwnsConnection)
+        public MetadataInitializationContext(DbConnection existingConnection, bool contextOwnsConnection)
             : base(existingConnection, contextOwnsConnection)
         {
             SetInitializer();

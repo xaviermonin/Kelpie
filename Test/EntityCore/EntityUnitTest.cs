@@ -32,7 +32,7 @@ namespace UnitTest
         [TestInitialize]
         public void Initialize()
         {
-            using (var context = new MetadataContext("Name=DataDbContext"))
+            using (var context = new MetadataInitializationContext("Name=DataDbContext"))
             {
                 var stringType = context.AttributeTypes
                                         .Single(attr => attr.ClrName == "System.String");

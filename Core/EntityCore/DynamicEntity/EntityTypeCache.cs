@@ -30,7 +30,7 @@ namespace EntityCore.DynamicEntity
 
         static IEnumerable<Type> CreateEntitiesTypes(DbConnection existingConnection)
         {
-            using (MetadataContext context = new MetadataContext(existingConnection, false))
+            using (MetadataInitializationContext context = new MetadataInitializationContext(existingConnection, false))
             {
                 DynamicAssemblyBuilder assemblyBuilder = new DynamicAssemblyBuilder();
 

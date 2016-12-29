@@ -3,7 +3,7 @@ using System.Data.Entity;
 
 namespace EntityCore.Initialization.Metadata
 {
-    internal class MetadataInitializer : CreateDatabaseIfNotExists<MetadataContext>
+    internal class MetadataInitializer : CreateDatabaseIfNotExists<MetadataInitializationContext>
     {
         protected List<Models.AttributeType> attributesTypes = new List<Models.AttributeType>();
         protected List<Models.Entity> entities = new List<Models.Entity>();
@@ -338,7 +338,7 @@ namespace EntityCore.Initialization.Metadata
             #endregion
         }
 
-        protected override void Seed(MetadataContext context)
+        protected override void Seed(MetadataInitializationContext context)
         {
             context.AttributeTypes.AddRange(attributesTypes);
             context.Entities.AddRange(entities);

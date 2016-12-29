@@ -67,6 +67,7 @@
     <Compile Include="DynamicEntity\Construction\Workshops\Exceptions\MetaDataException.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\NavigationPropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\PropertyWorkshop.cs" />
+    <Compile Include="DynamicEntity\MetadataRepository.cs" />
     <Compile Include="DynamicEntity\EntityDbSet.cs" />
     <Compile Include="DynamicEntity\EntityTypeCache.cs" />
     <Compile Include="DynamicEntity\Construction\DynamicAssemblyBuilder.cs" />
@@ -79,7 +80,7 @@
     <Compile Include="Initialization\Metadata\Models\Proxy.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="DynamicEntity\DynamicEntityContext.cs" />
-    <Compile Include="Initialization\Metadata\MetadataContext.cs" />
+    <Compile Include="Initialization\Metadata\MetadataInitializationContext.cs" />
     <Compile Include="Initialization\Metadata\MetadataInitializer.cs" />
     <Compile Include="Initialization\Metadata\Models\Attribute.cs" />
     <Compile Include="Initialization\Metadata\Models\AttributeType.cs" />

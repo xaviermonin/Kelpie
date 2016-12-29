@@ -22,7 +22,7 @@ namespace UnitTest
 
             // Prerequisite : Adding listener
 
-            using (var metadataContext = new MetadataContext(dbConnection, false))
+            using (var metadataContext = new MetadataInitializationContext(dbConnection, false))
             {
                 var entity = metadataContext.Entities
                                             .Where(e => e.Name == "Entity")
