@@ -6,6 +6,7 @@ using EntityCore.Initialization.Metadata.Models;
 using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,76 +15,12 @@ namespace UnitTest
     [TestClass]
     public class EntityUnitTest
     {
-        [BindedEntity(Name = "User")]
-        public interface IUser : IBaseEntity
-        {
-            string Firstname { get; set; }
-            string Lastname { get; set; }
-        }
-
-        public interface IUserLastNameOnly : IBaseEntity
-        {
-            string Lastname { get; set; }
-        }
-
-        const string ConnectionInstanceId = "42";
         private DynamicEntityContext entityContext;
 
         [TestInitialize]
         public void Initialize()
         {
-            using (var context = new MetadataInitializationContext("Name=DataDbContext"))
-            {
-                var stringType = context.AttributeTypes
-                                        .Single(attr => attr.ClrName == "System.String");
-                var intType = context.AttributeTypes
-                                     .Single(attr => attr.ClrName == "System.Int32");
-
-                context.Entities.Add(new Entity()
-                {
-                    Name = "User",
-                    Description = "Contains some users",
-                    Attributes =
-                    {
-                        new Attribute()
-                        {
-                            Name = "Firstname",
-                            Type = stringType,
-                            IsNullable = true,
-                            Length = 50,
-                        },
-                        new Attribute()
-                        {
-                            Name = "Lastname",
-                            Type = stringType,
-                            IsNullable = true,
-                            Length = 50,
-                        },
-                        new Attribute()
-                        {
-                            Name = "Age",
-                            Type = intType,
-                            IsNullable = true,
-                            Length = 50,
-                        },
-                    },
-                    Proxies =
-                    {
-                        new Proxy()
-                        {
-                            FullyQualifiedTypeName = typeof(IUserLastNameOnly).AssemblyQualifiedName,
-                        },
-                        new Proxy()
-                        {
-                            FullyQualifiedTypeName = typeof(IUser).AssemblyQualifiedName,
-                        },
-                    }
-                });
-
-                context.SaveChanges();
-            }
-
-            entityContext = new DynamicEntityContext("Name=DataDbContext");
+            entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreatePersistent("EntityUnitTest"), false);
         }
 
         [TestCleanup]
@@ -92,109 +29,108 @@ namespace UnitTest
             entityContext.Dispose();
             entityContext = null;
         }
-
+        
         [TestMethod]
-        public void CreateEntity()
+        [TestCategory("Entity")]
+        public void CheckDatabaseCleanup()
         {
-            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType")
-                                                     .Single(attr => attr.ClrName == "System.String");
-            IAttributeType intType = entityContext.ProxySet<IAttributeType>("AttributeType")
-                                                     .Single(attr => attr.ClrName == "System.Int32");
-
             try
             {
-                entityContext.ProxySet<IUser>();
-                Assert.Fail("User must be not loaded");
+                entityContext.Set("EnsureDatabaseCleanup");
+                Assert.Fail("'EnsureDatabaseCleanup' must be not loaded");
             }
-            catch (KeyNotFoundException) { }
+            catch (ArgumentException) { }
 
-            var userEntity = entityContext.Create<IEntity>("Entity");
-            userEntity.Name = "User";
-            userEntity.Description = "Contains some users";
+            Assert.IsFalse(entityContext.ProxySet<IEntity>().Where(e => e.Name == "EnsureDatabaseCleanup").Any());
 
-            var firstNameAttribute = entityContext.Create<IAttribute>("Attribute");
-            firstNameAttribute.Name = "Firstname";
-            firstNameAttribute.Type = stringType;
-            firstNameAttribute.IsNullable = true;
-            firstNameAttribute.Length = 50;
-
-            var lastNameAttribute = entityContext.Create<IAttribute>("Attribute");
-            lastNameAttribute.Name = "Lastname";
-            lastNameAttribute.Type = stringType;
-            lastNameAttribute.IsNullable = true;
-            lastNameAttribute.Length = 50;
-
-            var ageAttribute = entityContext.Create<IAttribute>("Attribute");
-            ageAttribute.Name = "Age";
-            ageAttribute.Type = intType;
-            ageAttribute.IsNullable = true;
-
-            userEntity.Attributes.Add(firstNameAttribute);
-            userEntity.Attributes.Add(lastNameAttribute);
-            userEntity.Attributes.Add(ageAttribute);
-
-            var userLastnameOnlyProxy = entityContext.Create<IProxy>("Proxy");
-            userLastnameOnlyProxy.Entity = userEntity;
-            userLastnameOnlyProxy.FullyQualifiedTypeName = typeof(IUserLastNameOnly).AssemblyQualifiedName;
-
-            IProxy userProxy = entityContext.Create<IProxy>("Proxy");
-            userProxy.Entity = userEntity;
-            userProxy.FullyQualifiedTypeName = typeof(IUser).AssemblyQualifiedName;
-
-            entityContext.ProxySet<IEntity>("Entity").Add(userEntity);
-            entityContext.ProxySet<IProxy>("Proxy").Add(userProxy);
-            entityContext.ProxySet<IProxy>("Proxy").Add(userLastnameOnlyProxy);
-            
+            var entity = entityContext.ProxySet<IEntity>().Create();
+            entity.Name = "EnsureDatabaseCleanup";
+            entityContext.ProxySet<IEntity>().Add(entity);
             entityContext.SaveChanges();
-
-            try
-            {
-                entityContext.ProxySet<IUser>();
-                Assert.Fail("User must be not loaded");
-            }
-            catch (KeyNotFoundException) { }
         }
 
         [TestMethod]
-        public void CreateUsers()
+        [TestCategory("Entity")]
+        public void CreateWithOneToManyRelationship()
         {
-            BaseEntity xm = entityContext.Create("User");
+            IBaseEntity stringType = entityContext.ProxySet<IAttributeType>("AttributeType")
+                                                  .Single(attr => attr.ClrName == "System.String");
 
-            xm.SetAttributeValue("Firstname", "Han");
-            xm.SetAttributeValue("Lastname", "Solo");
-            xm.SetAttributeValue("Age", 29);
+            IBaseEntity entity = entityContext.Create("Entity");
+            entity.SetAttributeValue("Name", "CreateWithManyToOneRelationship");
 
-            entityContext.Set("User").Add(xm);
+            IBaseEntity attribute = entityContext.Create("Attribute");
+            attribute.SetAttributeValue("Name", "Attribute_CreateWithOneToManyRelationship");
 
-            dynamic rh = entityContext.Create("User");
+            throw new NotImplementedException("AddMemberToRelationship(RelationName, Member);");
+            //entity.AddMemberToRelationship("Attributes", attribute);
 
-            rh.Firstname = "Obi-Wan";
-            rh.Lastname = "Kenobi";
-            rh.Age = 57;
-
-            entityContext.Set("User").Add(rh);
+            entityContext.Set("Entity").Add(entity);
 
             entityContext.SaveChanges();
         }
 
         [TestMethod]
-        public void LoadUsers()
+        [TestCategory("Entity")]
+        public void CreateWithManyToOneRelationship()
         {
-            var usersSet = entityContext.Set("User") as IEnumerable<IUser>;
-            var xavierFirstName = usersSet.Where(u => u.Firstname == "Xavier").Single();
+            IBaseEntity stringType = entityContext.ProxySet<IAttributeType>("AttributeType")
+                                                  .Single(attr => attr.ClrName == "System.String");
 
-            var xavierLastName = xavierFirstName as IUserLastNameOnly;
+            IBaseEntity entity = entityContext.Create("Entity");
+            entity.SetAttributeValue("Name", "CreateWithManyToOneRelationship");
 
-            Assert.AreEqual(xavierFirstName.Firstname, "Xavier");
-            Assert.AreEqual(xavierLastName.Lastname, "Monin");
+            IBaseEntity attribute = entityContext.Create("Attribute");
+            attribute.SetAttributeValue("Name", "Attribute_CreateWithManyToOneRelationship");
+            attribute.SetAttributeValue("Entity", entity);
 
-            var usersLastNameSet = entityContext.Set("User") as IEnumerable<IUserLastNameOnly>;
-            xavierLastName = usersLastNameSet.Where(u => u.Lastname == "Hammana").Single();
+            entityContext.Set("Attribute").Add(attribute);
 
-            Assert.AreEqual(xavierLastName.Lastname, "Hammana");
+            entityContext.SaveChanges();
+        }
 
-            dynamic xavierDynamic = xavierFirstName;
-            Assert.AreEqual(xavierDynamic.Age, 29);
+        [TestMethod]
+        [TestCategory("Entity")]
+        public void CreateEntityWithBaseEntity()
+        {
+            IBaseEntity entity = entityContext.Create("Entity");
+            entity.SetAttributeValue("Name", "CreateEntityWithBaseEntity");
+            entityContext.Set("Entity").Add(entity);
+
+            entityContext.SaveChanges();
+        }
+
+        [TestMethod]
+        [TestCategory("Entity")]
+        public void CreateEntityWithDynamic()
+        {
+            dynamic entity = entityContext.Create("Entity");
+            entity.Name = "CreateEntityWithDynamic";
+            entityContext.Set("Entity").Add(entity);
+
+            entityContext.SaveChanges();
+        }
+
+        [TestMethod]
+        [TestCategory("Entity")]
+        public void RetrieveWithDynamic()
+        {
+            var entities = entityContext.Set("Entity") as IEnumerable<dynamic>;
+            var entityEntity = entities.Where(e => e.Name == "Entity").Single();
+
+            Assert.AreEqual(entityEntity.Name, "Entity");
+            Assert.AreEqual(entityEntity.Managed, true);
+        }
+
+        [TestMethod]
+        [TestCategory("Entity")]
+        public void RetrieveWithBaseEntity()
+        {
+            var entities = entityContext.Set("Entity") as IEnumerable<dynamic>;
+            var entityEntity = entities.Where(e => e.Name == "Entity").Single();
+
+            Assert.AreEqual(entityEntity.Name, "Entity");
+            Assert.AreEqual(entityEntity.Managed, true);
         }
     }
 }

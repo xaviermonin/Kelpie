@@ -1,8 +1,14 @@
 ﻿using EntityCore.DynamicEntity;
+using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Configuration;
 using System.Data.Entity;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace UnitTest
 {
@@ -16,8 +22,7 @@ namespace UnitTest
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreateTransient(),
-                                                     true);
+               entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreatePersistent("ProxyUnitTest"), true);
         }
 
         [ClassCleanup]
@@ -121,6 +126,71 @@ namespace UnitTest
             Assert.IsInstanceOfType(attributeEntity, typeof(IEntity));
             Assert.AreEqual(attributeEntity.Name, "Attribute");
             Assert.IsTrue(attributeEntity.Managed);
+        }
+
+        public interface IVehicule : IBaseEntity
+        {
+        }
+
+        [TestMethod]
+        [TestCategory("Proxy")]
+        public void PublishEntity()
+        {
+            // Delete database if exist
+            try
+            {
+                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DataDbContext"]
+                                                                        .ConnectionString))
+                {
+                    connection.Open();
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = $"ALTER DATABASE [{connection.Database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
+                        command.CommandText += $"DROP DATABASE [{connection.Database}];";
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch { }
+
+            string currentPath = Assembly.GetExecutingAssembly().Location;
+
+            AppDomainSetup setup = new AppDomainSetup()
+            {
+                ConfigurationFile = $"{currentPath}.config",
+                ApplicationBase = Path.GetDirectoryName(currentPath),
+            };
+            var appDomain = AppDomain.CreateDomain("PublishEntity", null, setup);
+
+            try
+            {
+                var entryPoint = (PublishingEntryPoint)appDomain.CreateInstanceFromAndUnwrap(currentPath,
+                                                                            typeof(PublishingEntryPoint).FullName);
+                entryPoint.Modify();
+            }
+            finally
+            {
+                AppDomain.Unload(appDomain);
+            }
+
+            using (var context = new DynamicEntityContext("Name=DataDbContext"))
+                context.Set("PublishEntity");
+        }
+
+        protected class PublishingEntryPoint : MarshalByRefObject
+        {
+            public void Modify()
+            {
+                // Effort can't be used here
+                using (var context = new DynamicEntityContext("Name=DataDbContext"))
+                {
+                    var vehicule = context.ProxySet<IEntity>().Create();
+                    vehicule.Name = "PublishEntity";
+
+                    context.ProxySet<IEntity>().Add(vehicule);
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
