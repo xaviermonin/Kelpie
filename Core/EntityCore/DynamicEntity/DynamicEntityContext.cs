@@ -138,11 +138,12 @@ namespace EntityCore.DynamicEntity
                 EventDispatcher.DispatchEvent(EventDispatcher.EntityEvent.PreCreate, entry.Entity.GetType(), this, entry);
         }
 
-#endregion
+        #endregion
 
         /// <summary>
         /// Create a new instance of an entity
         /// from the given entity name.
+        /// Note that this instance is NOT added or attached to the set.
         /// </summary>
         /// <param name="entityName">Entity name</param>
         /// <returns></returns>
@@ -154,6 +155,7 @@ namespace EntityCore.DynamicEntity
         /// <summary>
         /// Create a new instance of an entity
         /// casted to the given proxy type.
+        /// Note that this instance is NOT added or attached to the set.
         /// </summary>
         /// <typeparam name="TProxy">Proxy type</typeparam>
         /// <param name="entityName"></param>
@@ -167,13 +169,59 @@ namespace EntityCore.DynamicEntity
         /// Create an entity record.
         /// The entity name is got from
         /// the <see cref="BindedEntityAttribute"/> of the proxy type.
+        /// Note that this instance is NOT added or attached to the set.
         /// </summary>
         /// <typeparam name="TProxy">Proxy type</typeparam>
         /// <returns></returns>
         public TProxy Create<TProxy>() where TProxy : IBaseEntity
         {
             var bindedName = TypeHelper.GetCustomAttribute<BindedEntityAttribute>(typeof(TProxy));
-            return (TProxy)(Set(bindedName.Name).Create());
+            return Create<TProxy>(bindedName.Name);
+        }
+
+        /// <summary>
+        /// Create a new instance of an entity
+        /// from the given entity name,
+        /// set its state to Added and attach it to the set.
+        /// </summary>
+        /// <param name="entityName">Entity name</param>
+        /// <returns></returns>
+        public BaseEntity New(string entityName)
+        {
+            var baseEntity = Create(entityName);
+            Set(entityName).Add(baseEntity);
+
+            return baseEntity;
+        }
+
+        /// <summary>
+        /// Create a new instance of an entity
+        /// from the given entity name,
+        /// set it state to Added and attach it to the set.
+        /// </summary>
+        /// <typeparam name="TProxy">Proxy type</typeparam>
+        /// <param name="entityName"></param>
+        /// <returns></returns>
+        public TProxy New<TProxy>(string entityName) where TProxy : IBaseEntity
+        {
+            var entity = Create<TProxy>(entityName);
+            Set(entityName).Add(entity);
+
+            return entity;
+        }
+
+        /// <summary>
+        /// Create an entity record and
+        /// set it state to Added and attach it to the set.
+        /// The entity name is got from
+        /// the <see cref="BindedEntityAttribute"/> of the proxy type.
+        /// </summary>
+        /// <typeparam name="TProxy">Proxy type</typeparam>
+        /// <returns></returns>
+        public TProxy New<TProxy>() where TProxy : IBaseEntity
+        {
+            var bindedName = TypeHelper.GetCustomAttribute<BindedEntityAttribute>(typeof(TProxy));
+            return New<TProxy>(bindedName.Name);
         }
 
         /// <summary>
@@ -184,6 +232,9 @@ namespace EntityCore.DynamicEntity
         /// <returns></returns>
         public DbSet Set(string entityName)
         {
+            if (!_tables.ContainsKey(entityName))
+                throw new ArgumentException($"The '{entityName}' entity doesn't exist", "entityName");
+
             return Set(_tables[entityName]);
         }
 
