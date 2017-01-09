@@ -1,4 +1,5 @@
-﻿using EntityCore.DynamicEntity;
+﻿using EntityCore;
+using EntityCore.DynamicEntity;
 using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,7 +23,7 @@ namespace UnitTest
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-               entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreatePersistent("ProxyUnitTest"), true);
+            entityContext = Context.New(Effort.DbConnectionFactory.CreatePersistent("ProxyUnitTest"));
         }
 
         [ClassCleanup]
@@ -83,10 +84,10 @@ namespace UnitTest
         public void ManyToOneNavigation()
         {
             var attributeName = entityContext.ProxySet<IAttribute>("Attribute")
-                                            .Include(c => c.Entity)
-                                            .Where(c => c.Name == "Name" &&
-                                                        c.Entity.Name == "Entity")
-                                            .Single();
+                                             .Include(c => c.Entity)
+                                             .Where(c => c.Name == "Name" &&
+                                                         c.Entity.Name == "Entity")
+                                             .Single();
 
             Assert.AreEqual(attributeName.Name, "Name");
             Assert.IsNotNull(attributeName.Entity);
@@ -100,15 +101,15 @@ namespace UnitTest
         public void OneToManyNavigation()
         {
             var entity = entityContext.ProxySet<IEntity>("Entity")
-                                        .Include(c => c.Attributes)
-                                        .Where(c => c.Name == "Entity")
-                                        .Single();
+                                      .Include(c => c.Attributes)
+                                      .Where(c => c.Name == "Entity")
+                                      .Single();
 
             Assert.IsNotNull(entity.Attributes);
             Assert.AreEqual(entity.Attributes.Count, 5);
 
             var nameAttribute = entity.Attributes.Where(c => c.Name == "Name")
-                                                    .Single();
+                                                 .Single();
 
             Assert.AreEqual(nameAttribute.Name, "Name");
         }
@@ -117,8 +118,6 @@ namespace UnitTest
         [TestCategory("Proxy")]
         public void BindedEntity()
         {
-            var r = entityContext.ProxySet<IEntity>();
-
             var attributeEntity = entityContext.ProxySet<IEntity>()
                                                .Where(e => e.Name == "Attribute")
                                                .Single();
@@ -126,6 +125,18 @@ namespace UnitTest
             Assert.IsInstanceOfType(attributeEntity, typeof(IEntity));
             Assert.AreEqual(attributeEntity.Name, "Attribute");
             Assert.IsTrue(attributeEntity.Managed);
+        }
+
+        [TestMethod]
+        [TestCategory("Entity")]
+        public void RetrieveWithNoTracking()
+        {
+            IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").AsNoTracking()
+                                                     .Where(c => c.ClrName == "System.String")
+                                                     .Single();
+
+            Assert.AreEqual(stringType.ClrName, "System.String");
+            Assert.AreEqual(stringType.SqlServerName, "nvarchar");
         }
 
         public interface IVehicule : IBaseEntity
@@ -173,7 +184,7 @@ namespace UnitTest
                 AppDomain.Unload(appDomain);
             }
 
-            using (var context = new DynamicEntityContext("Name=DataDbContext"))
+            using (var context = Context.New("Name=DataDbContext"))
                 context.Set("PublishEntity");
         }
 
@@ -182,7 +193,7 @@ namespace UnitTest
             public void Modify()
             {
                 // Effort can't be used here
-                using (var context = new DynamicEntityContext("Name=DataDbContext"))
+                using (var context = Context.New("Name=DataDbContext"))
                 {
                     var vehicule = context.ProxySet<IEntity>().Create();
                     vehicule.Name = "PublishEntity";

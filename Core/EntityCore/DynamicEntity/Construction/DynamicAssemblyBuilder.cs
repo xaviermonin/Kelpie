@@ -29,12 +29,8 @@ namespace EntityCore.DynamicEntity.Construction
             _appDomain = appDomain;
             Name = assemblyName;
 
-            if (_assemblyBuilder == null)
-                _assemblyBuilder = _appDomain.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.RunAndSave);
-
-            //vital to ensure the namespace of the assembly is the same as the module name, else IL inspectors will fail
-            if (_moduleBuilder == null)
-                _moduleBuilder = _assemblyBuilder.DefineDynamicModule(assemblyName + ".dll");
+            _assemblyBuilder = _appDomain.DefineDynamicAssembly(new AssemblyName(assemblyName), AssemblyBuilderAccess.RunAndSave);
+            _moduleBuilder = _assemblyBuilder.DefineDynamicModule(assemblyName);
         }
 
         internal IEnumerable<Type> BuildTypes(IEnumerable<Models.Entity> entities)
@@ -47,7 +43,7 @@ namespace EntityCore.DynamicEntity.Construction
 
         public void SaveAssembly()
         {
-            _assemblyBuilder.Save(_assemblyBuilder.GetName().Name + ".dll");
+            _assemblyBuilder.Save(Name + ".dll");
         }
     }
 }

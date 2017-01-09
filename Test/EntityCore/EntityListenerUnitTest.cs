@@ -1,4 +1,5 @@
-﻿using EntityCore.DynamicEntity;
+﻿using EntityCore;
+using EntityCore.DynamicEntity;
 using EntityCore.Entity;
 using EntityCore.Entity.Event;
 using EntityCore.Initialization.Metadata;
@@ -38,7 +39,7 @@ namespace UnitTest
                 metadataContext.SaveChanges();
             }
 
-            using (var context = new DynamicEntityContext(dbConnection, false))
+            using (var context = Context.New(dbConnection))
             {
                 context.ProxySet<IListener>()
                        .Where(i => i.FullyQualifiedTypeName == testListenerFqtn)

@@ -18,14 +18,14 @@ namespace EntityCore.DynamicEntity
         private Dictionary<string, Type> _tables = new Dictionary<string, Type>();
         private MetadataRepository _metadataRepository;
 
-        public DynamicEntityContext(string nameOrConnectionString)
-            : base(nameOrConnectionString)
+        internal DynamicEntityContext(string nameOrConnectionString, DbCompiledModel model)
+            : base(nameOrConnectionString, model)
         {
             InitializeTypes();
         }
 
-        public DynamicEntityContext(DbConnection existingConnection, bool contextOwnsConnection)
-            : base(existingConnection, contextOwnsConnection)
+        internal DynamicEntityContext(DbConnection existingConnection, DbCompiledModel model, bool contextOwnsConnection)
+            : base(existingConnection, model, contextOwnsConnection)
         {
             InitializeTypes();
         }
@@ -34,7 +34,7 @@ namespace EntityCore.DynamicEntity
         {
             foreach (var type in EntityTypeCache.GetEntitiesTypes(Database.Connection))
                 _tables.Add(type.Name, type);
-
+            
             _metadataRepository = new MetadataRepository(this);
         }
 
@@ -225,7 +225,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Return a non-generic <see cref="EntityDbSet{TEntity}"/> instance
+        /// Return a non-generic <see cref="ProxyDbSet{TEntity}"/> instance
         /// for access to entities of the given entity name.
         /// </summary>
         /// <param name="entityName"></param>
@@ -239,29 +239,29 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Return a <see cref="EntityDbSet{TEntity}"/> instance
+        /// Return a <see cref="ProxyDbSet{TEntity}"/> instance
         /// for access to entities via a proxy inherited from <see cref="IBaseEntity"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="entityName">Entity name</param>
         /// <returns></returns>
-        public EntityDbSet<T> ProxySet<T>(string entityName) where T : class, IBaseEntity
+        public ProxyDbSet<T> ProxySet<T>(string entityName) where T : class, IBaseEntity
         {
-            return new EntityDbSet<T>(Set(entityName));
+            return new ProxyDbSet<T>(Set(entityName));
         }
 
         /// <summary>
-        /// Return a <see cref="EntityDbSet{TEntity}"/> instance
+        /// Return a <see cref="ProxyDbSet{TEntity}"/> instance
         /// for access to entities via a proxy inherited from <see cref="IBaseEntity"/>.
         /// The entity name is got from
         /// the <see cref="BindedEntityAttribute"/> of the proxy type.
         /// </summary>
         /// <typeparam name="T">Proxy type inherited from <seealso cref="IBaseEntity"/></typeparam>
         /// <returns></returns>
-        public EntityDbSet<T> ProxySet<T>() where T : class, IBaseEntity
+        public ProxyDbSet<T> ProxySet<T>() where T : class, IBaseEntity
         {
             var bindedName = TypeHelper.GetCustomAttribute<BindedEntityAttribute>(typeof(T));
-            return new EntityDbSet<T>(Set(bindedName.Name));
+            return new ProxyDbSet<T>(Set(bindedName.Name));
         }
 
         public MetadataRepository Metadata
@@ -271,6 +271,7 @@ namespace EntityCore.DynamicEntity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            
             foreach (var table in _tables)
                 modelBuilder.RegisterEntityType(table.Value);
 

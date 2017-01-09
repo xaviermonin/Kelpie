@@ -1,8 +1,6 @@
 ﻿using EntityCore;
 using EntityCore.DynamicEntity;
 using EntityCore.Entity;
-using EntityCore.Initialization.Metadata;
-using EntityCore.Initialization.Metadata.Models;
 using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -20,7 +18,7 @@ namespace UnitTest
         [TestInitialize]
         public void Initialize()
         {
-            entityContext = new DynamicEntityContext(Effort.DbConnectionFactory.CreatePersistent("EntityUnitTest"), false);
+            entityContext = Context.New(Effort.DbConnectionFactory.CreatePersistent("EntityUnitTest"));
         }
 
         [TestCleanup]
@@ -127,10 +125,10 @@ namespace UnitTest
         public void RetrieveWithBaseEntity()
         {
             var entities = entityContext.Set("Entity") as IEnumerable<dynamic>;
-            var entityEntity = entities.Where(e => e.Name == "Entity").Single();
+            BaseEntity entityEntity = entities.Where(e => e.Name == "Entity").Single();
 
-            Assert.AreEqual(entityEntity.Name, "Entity");
-            Assert.AreEqual(entityEntity.Managed, true);
+            Assert.AreEqual(entityEntity.GetAttributeValue<string>("Name"), "Entity");
+            Assert.AreEqual(entityEntity.GetAttributeValue<bool>("Managed"), true);
         }
     }
 }

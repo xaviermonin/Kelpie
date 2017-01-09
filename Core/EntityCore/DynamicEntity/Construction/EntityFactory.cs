@@ -51,7 +51,7 @@ namespace EntityCore.DynamicEntity.Construction
         }
 
         /// <summary>
-        /// Exposes a TypeBuilder that can be returned and created outside of the class
+        /// Exposes a TypeBuilder
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
@@ -60,8 +60,8 @@ namespace EntityCore.DynamicEntity.Construction
         private TypeBuilder CreateDynamicTypeBuilder<T>(Models.Entity entity)
             where T : BaseEntity
         {
-            //typeof(T) is for the base class, can be omitted if not needed
-            TypeBuilder typeBuilder = _moduleBuilder.DefineType(_moduleBuilder.Name + "." + entity.Name, TypeAttributes.Public
+            TypeBuilder typeBuilder = _moduleBuilder.DefineType(_moduleBuilder.ScopeName + "." + entity.Name,
+                                                              TypeAttributes.Public
                                                             | TypeAttributes.Class
                                                             | TypeAttributes.AutoClass
                                                             | TypeAttributes.AnsiClass

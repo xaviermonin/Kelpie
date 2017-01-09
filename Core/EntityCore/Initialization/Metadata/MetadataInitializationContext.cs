@@ -7,7 +7,7 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.Initialization.Metadata
 {
-    internal partial class MetadataInitializationContext : BaseEntityContext
+    internal partial class MetadataInitializationContext : DbContext
     {
         public MetadataInitializationContext(string nameOrConnectionString)
             : base(nameOrConnectionString)

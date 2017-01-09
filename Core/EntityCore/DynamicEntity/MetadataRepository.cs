@@ -12,27 +12,27 @@ namespace EntityCore.DynamicEntity
             _context = context;
         }
         
-        public EntityDbSet<IEntity> Entities
+        public ProxyDbSet<IEntity> Entities
         {
             get { return _context.ProxySet<IEntity>(); }
         }
 
-        public EntityDbSet<IAttribute> Attributes
+        public ProxyDbSet<IAttribute> Attributes
         {
             get { return _context.ProxySet<IAttribute>(); }
         }
 
-        public EntityDbSet<IAttributeType> AttributeTypes
+        public ProxyDbSet<IAttributeType> AttributeTypes
         {
             get { return _context.ProxySet<IAttributeType>(); }
         }
 
-        public EntityDbSet<IProxy> Proxies
+        public ProxyDbSet<IProxy> Proxies
         {
             get { return _context.ProxySet<IProxy>(); }
         }
 
-        public EntityDbSet<IListener> Listener
+        public ProxyDbSet<IListener> Listener
         {
             get { return _context.ProxySet<IListener>(); }
         }

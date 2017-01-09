@@ -40,6 +40,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -50,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\DynamicModelBuilder.cs" />
+    <Compile Include="Model\ModelCache.cs" />
+    <Compile Include="Utils\Check.cs" />
     <Compile Include="DynamicEntity\Construction\EntityFactory.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Emitter\EmitHelper.cs" />
     <Compile Include="DynamicEntity\Construction\JobBag.cs" />
@@ -68,9 +72,10 @@
     <Compile Include="DynamicEntity\Construction\Workshops\NavigationPropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\PropertyWorkshop.cs" />
     <Compile Include="DynamicEntity\MetadataRepository.cs" />
-    <Compile Include="DynamicEntity\EntityDbSet.cs" />
+    <Compile Include="DynamicEntity\ProxyDbSet.cs" />
     <Compile Include="DynamicEntity\EntityTypeCache.cs" />
     <Compile Include="DynamicEntity\Construction\DynamicAssemblyBuilder.cs" />
+    <Compile Include="Context.cs" />
     <Compile Include="Entity\Event\EntityListener.cs" />
     <Compile Include="Entity\Event\EventDispatcher.cs" />
     <Compile Include="Entity\Event\IEntityListener.cs" />
@@ -86,6 +91,7 @@
     <Compile Include="Initialization\Metadata\Models\AttributeType.cs" />
     <Compile Include="Initialization\Metadata\Models\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\DbHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
