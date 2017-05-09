@@ -1,6 +1,6 @@
 ﻿namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    public class EntityWorkshopResult
+    public class WorkshopResult
     {
         public string EntityName { get; set; }
     }

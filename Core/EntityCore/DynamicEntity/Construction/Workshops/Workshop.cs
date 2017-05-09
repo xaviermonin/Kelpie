@@ -5,12 +5,12 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    abstract class EntityWorkshop<TResult> : IEntityWorkshop where TResult : EntityWorkshopResult
+    abstract class Workshop<TResult> : IEntityWorkshop where TResult : WorkshopResult
     {
         protected EntityFactory Factory { get; private set; }
         private Dictionary<string, TResult> resultsByEntityName;
 
-        public EntityWorkshop(EntityFactory factory)
+        public Workshop(EntityFactory factory)
         {
             this.Factory = factory;
             this.resultsByEntityName = new Dictionary<string, TResult>();

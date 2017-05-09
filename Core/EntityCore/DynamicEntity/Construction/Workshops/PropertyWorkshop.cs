@@ -10,9 +10,9 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    class PropertyWorkshop : EntityWorkshop<PropertyWorkshop.Result>
+    class PropertyWorkshop : Workshop<PropertyWorkshop.Result>
     {
-        public class Result : EntityWorkshopResult
+        public class Result : WorkshopResult
         {
             public IEnumerable<PropertyBuilder> Properties { get; set; }
         }

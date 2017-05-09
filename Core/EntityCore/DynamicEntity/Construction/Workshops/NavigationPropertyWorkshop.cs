@@ -10,9 +10,9 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    class NavigationPropertyWorkshop : EntityWorkshop<NavigationPropertyWorkshop.Result>
+    class NavigationPropertyWorkshop : Workshop<NavigationPropertyWorkshop.Result>
     {
-        public class Result : EntityWorkshopResult
+        public class Result : WorkshopResult
         {
             public IReadOnlyDictionary<Models.Relationship, PropertyBuilder> OneToMany { get; internal set; }
             public IReadOnlyDictionary<Models.Relationship, PropertyBuilder> ManyToOne { get; internal set; }

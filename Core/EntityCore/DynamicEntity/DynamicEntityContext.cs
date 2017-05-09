@@ -271,7 +271,6 @@ namespace EntityCore.DynamicEntity
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
             foreach (var table in _tables)
                 modelBuilder.RegisterEntityType(table.Value);
 

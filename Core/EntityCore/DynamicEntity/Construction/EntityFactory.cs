@@ -19,11 +19,11 @@ namespace EntityCore.DynamicEntity.Construction
         {
             _moduleBuilder = moduleBuilder;
 
-            workshops.Add(new EntityInitializationWorkshop(this));
+            workshops.Add(new InitializationWorkshop(this));
             workshops.Add(new PropertyWorkshop(this));
             workshops.Add(new NavigationPropertyWorkshop(this));
             workshops.Add(new ProxyNavigationPropertyWorkshop(this));
-            workshops.Add(new EntityListenerWorkshop(this));
+            workshops.Add(new ListenerWorkshop(this));
         }
 
         public IEnumerable<JobBag> JobBags

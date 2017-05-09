@@ -60,11 +60,11 @@
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\FieldHelper.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\MethodHelper.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\PropertyHelper.cs" />
-    <Compile Include="DynamicEntity\Construction\Workshops\EntityListenerWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\ListenerWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Workshops\ProxyNavigationPropertyWorkshop.cs" />
-    <Compile Include="DynamicEntity\Construction\Workshops\EntityInitializationWorkshop.cs" />
-    <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshop.cs" />
-    <Compile Include="DynamicEntity\Construction\Workshops\EntityWorkshopResult.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\InitializationWorkshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\Workshop.cs" />
+    <Compile Include="DynamicEntity\Construction\Workshops\WorkshopResult.cs" />
     <Compile Include="DynamicEntity\Construction\IEntityWorkshop.cs" />
     <Compile Include="DynamicEntity\Construction\Materials\BindingCollection.cs" />
     <Compile Include="DynamicEntity\Construction\Helpers\Reflection\TypeHelper.cs" />

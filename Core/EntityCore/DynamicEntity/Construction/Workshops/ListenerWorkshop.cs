@@ -5,14 +5,14 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    class EntityListenerWorkshop : EntityWorkshop<EntityListenerWorkshop.Result>
+    class ListenerWorkshop : Workshop<ListenerWorkshop.Result>
     {
-        public class Result : EntityWorkshopResult
+        public class Result : WorkshopResult
         {
             
         }
 
-        public EntityListenerWorkshop(EntityFactory factory)
+        public ListenerWorkshop(EntityFactory factory)
             : base(factory)
         {
         }

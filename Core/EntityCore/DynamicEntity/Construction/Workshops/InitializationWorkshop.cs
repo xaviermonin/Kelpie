@@ -8,14 +8,14 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    class EntityInitializationWorkshop : EntityWorkshop<EntityInitializationWorkshop.Result>
+    class InitializationWorkshop : Workshop<InitializationWorkshop.Result>
     {
-        public class Result : EntityWorkshopResult
+        public class Result : WorkshopResult
         {
             public IEnumerable<Type> Proxies { get; internal set; }
         }
 
-        public EntityInitializationWorkshop(EntityFactory factory)
+        public InitializationWorkshop(EntityFactory factory)
             : base(factory)
         {
         }

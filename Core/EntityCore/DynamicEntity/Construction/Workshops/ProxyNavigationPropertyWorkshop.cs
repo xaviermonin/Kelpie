@@ -12,13 +12,13 @@ using Models = EntityCore.Initialization.Metadata.Models;
 
 namespace EntityCore.DynamicEntity.Construction.Workshops
 {
-    class ProxyNavigationPropertyWorkshop : EntityWorkshop<ProxyNavigationPropertyWorkshop.Result>
+    class ProxyNavigationPropertyWorkshop : Workshop<ProxyNavigationPropertyWorkshop.Result>
     {
         public ProxyNavigationPropertyWorkshop(EntityFactory factory) : base(factory)
         {
         }
 
-        public class Result : EntityWorkshopResult
+        public class Result : WorkshopResult
         {
 
         }
