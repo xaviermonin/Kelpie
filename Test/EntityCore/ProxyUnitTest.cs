@@ -4,9 +4,7 @@ using EntityCore.Proxy;
 using EntityCore.Proxy.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Configuration;
 using System.Data.Entity;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -128,7 +126,7 @@ namespace UnitTest
         }
 
         [TestMethod]
-        [TestCategory("Entity")]
+        [TestCategory("Proxy")]
         public void RetrieveWithNoTracking()
         {
             IAttributeType stringType = entityContext.ProxySet<IAttributeType>("AttributeType").AsNoTracking()
@@ -139,30 +137,11 @@ namespace UnitTest
             Assert.AreEqual(stringType.SqlServerName, "nvarchar");
         }
 
-        public interface IVehicule : IBaseEntity
-        {
-        }
-
         [TestMethod]
         [TestCategory("Proxy")]
         public void PublishEntity()
         {
-            // Delete database if exist
-            try
-            {
-                using (var connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DataDbContext"]
-                                                                        .ConnectionString))
-                {
-                    connection.Open();
-                    using (var command = connection.CreateCommand())
-                    {
-                        command.CommandText = $"ALTER DATABASE [{connection.Database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;";
-                        command.CommandText += $"DROP DATABASE [{connection.Database}];";
-                        command.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch { }
+            Database.Delete("Name=DataDbContext");
 
             string currentPath = Assembly.GetExecutingAssembly().Location;
 
@@ -185,20 +164,21 @@ namespace UnitTest
             }
 
             using (var context = Context.New("Name=DataDbContext"))
-                context.Set("PublishEntity");
+                context.Set("PublishedEntity"); // Check PublishedEntity existance
         }
 
         protected class PublishingEntryPoint : MarshalByRefObject
         {
             public void Modify()
             {
-                // Effort can't be used here
+                // Effort can't be used here because 
+                // Effort memory can't be shared between AppDomain
                 using (var context = Context.New("Name=DataDbContext"))
                 {
-                    var vehicule = context.ProxySet<IEntity>().Create();
-                    vehicule.Name = "PublishEntity";
+                    var publishedEntity = context.ProxySet<IEntity>().Create();
+                    publishedEntity.Name = "PublishedEntity";
 
-                    context.ProxySet<IEntity>().Add(vehicule);
+                    context.ProxySet<IEntity>().Add(publishedEntity);
                     context.SaveChanges();
                 }
             }
