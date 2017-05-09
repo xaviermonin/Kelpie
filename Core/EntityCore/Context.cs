@@ -1,9 +1,11 @@
 ﻿using EntityCore.DynamicEntity;
 using EntityCore.Utils;
-using System.Configuration;
 using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.SqlClient;
+using System.Linq;
 
 namespace EntityCore
 {
@@ -12,8 +14,8 @@ namespace EntityCore
         public static DynamicEntityContext New(string nameOrConnectionString)
         {
             Check.NotEmpty(nameOrConnectionString, "nameOrConnectionString");
-            var connnection = DbHelpers.GetDbConnection(nameOrConnectionString);
-            DbCompiledModel model = GetCompiledModel(connnection);
+            var connection = DbHelpers.GetDbConnection(nameOrConnectionString);
+            DbCompiledModel model = GetCompiledModel(connection);
 
             return new DynamicEntityContext(nameOrConnectionString, model);
         }
@@ -32,6 +34,9 @@ namespace EntityCore
 
             foreach (var entity in EntityTypeCache.GetEntitiesTypes(connection))
                 builder.RegisterEntityType(entity);
+
+            if (!(connection is SqlConnection)) // Compatible Effort. See https://effort.codeplex.com/workitem/678
+                builder.Conventions.Remove<ColumnAttributeConvention>();
 
             var model = builder.Build(connection);
 
