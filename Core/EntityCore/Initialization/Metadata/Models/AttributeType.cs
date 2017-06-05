@@ -12,26 +12,9 @@ namespace EntityCore.Initialization.Metadata.Models
             this.Attributes = new HashSet<Attribute>();
         }
 
-        private string _clrName;
-        public string ClrName
-        {
-            get { return _clrName; }
-            set { SetProperty(ref _clrName, value); }
-        }
-
-        private string _sqlServerName;
-        public string SqlServerName
-        {
-            get { return _sqlServerName; }
-            set { SetProperty(ref _sqlServerName, value); }
-        }
-
-        private int? _defaultLength;
-        public int? DefaultLength
-        {
-            get { return _defaultLength; }
-            set { SetProperty(ref _defaultLength, value); }
-        }
+        public string ClrName { get; set; }
+        public string SqlServerName { get; set; }
+        public int? DefaultLength { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attribute> Attributes { get; set; }

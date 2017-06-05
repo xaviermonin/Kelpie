@@ -14,35 +14,12 @@ namespace EntityCore.Initialization.Metadata.Models
             this.ManyToOneRelationships = new HashSet<Relationship>();
         }
 
-        public string Name
-        {
-            get;
-            set;
-        }
+        public string Name { get; set; }
+        public string Description{ get; set; }
 
-        public string Description
-        {
-            get;
-            set;
-        }
-
-        public bool Managed
-        {
-            get;
-            set;
-        }
-
-        public bool Metadata
-        {
-            get;
-            set;
-        }
-
-        public bool Association
-        {
-            get;
-            set;
-        }
+        public bool Managed { get; set; }
+        public bool Metadata { get; set; }
+        public bool Association { get; set; }
 
         public virtual ICollection<Attribute> Attributes { get; set; }
 

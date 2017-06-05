@@ -1,48 +1,33 @@
 ﻿using EntityCore.Proxy;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 namespace EntityCore.Entity
 {
     public abstract class BaseEntity : IBaseEntity
     {
-        private int _id;
-
         [DataMember, Key]
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                SetProperty(ref _id, value);
-            }
-        }
-
-        protected bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
-        {
-            if (object.Equals(storage, value)) return false;
-
-            T oldValue = storage;
-
-            storage = value;
-            
-            return true;
-        }
+        public int Id { get; set; }
 
         public T GetAttributeValue<T>(string propertyName)
         {
-            var property = this.GetType().GetProperty(propertyName);
+            var property = GetType().GetProperty(propertyName);
             return (T)property.GetValue(this);
         }
 
         public void SetAttributeValue<T>(string propertyName, T value)
         {
-            var property = this.GetType().GetProperty(propertyName);
+            var property = GetType().GetProperty(propertyName);
             property.SetValue(this, value);
+        }
+
+        public void AddMemberToRelationship(string relationName, IBaseEntity baseEntity)
+        {
+            throw new NotImplementedException();
+
+            /*var property = GetType().GetProperty(relationName, typeof(void));
+            var collection = property.GetMethod.Invoke(this, null);*/
         }
     }
 }
