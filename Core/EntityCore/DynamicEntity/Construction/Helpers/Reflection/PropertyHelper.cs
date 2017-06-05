@@ -7,7 +7,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
     static class PropertyHelper
     {
         /// <summary>
-        /// Qualify getter and/or setter of a property
+        /// Qualifies getter and/or setter of a property
         /// </summary>
         [Flags]
         public enum PropertyGetSet
@@ -21,7 +21,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
                                                                 MethodAttributes.HideBySig | MethodAttributes.Virtual;
 
         /// <summary>
-        /// Create a property (get and set) with backing field implementation:
+        /// Creates a property (get and set) with backing field implementation:
         /// Type PropertyName {
         ///     get; set;
         /// }
@@ -55,7 +55,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Create the Set or/and Get property without body.
+        /// Creates the Set or/and Get property without body.
         /// </summary>
         /// <param name="typeBuilder">Type </param>
         /// <param name="name">Property name</param>
@@ -83,7 +83,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Create the Set or/and Get property with an explicit implementation of an interface.
+        /// Creates the Set or/and Get property with an explicit implementation of an interface.
         /// </summary>
         /// <param name="typeBuilder">Type </param>
         /// <param name="name">Property name</param>

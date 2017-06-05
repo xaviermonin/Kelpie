@@ -69,7 +69,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Get the custom attribute of an type
+        /// Gets the custom attribute of an type
         /// </summary>
         /// <param name="proxyNavProp">PropertyInfo</param>
         /// <returns></returns>
@@ -79,7 +79,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Determine if two types are same or subclass it.
+        /// Determines if two types are same or subclass it.
         /// </summary>
         /// <param name="potentialBase"></param>
         /// <param name="potentialDescendant"></param>
@@ -90,6 +90,12 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
                    || potentialDescendant.Equals(potentialBase);
         }
 
+        /// <summary>
+        /// Determines if a type (potentialBase) subclass an other (potentialDescendant).
+        /// </summary>
+        /// <param name="potentialBase">Potential base of potential descendant</param>
+        /// <param name="potentialDescendant">Potential descendant of potential base</param>
+        /// <returns></returns>
         public static bool IsSubclassOf(Type potentialBase, Type potentialDescendant)
         {
             if (!potentialDescendant.Equals(potentialBase))
@@ -98,6 +104,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
                 {
                     if (potentialDescendant.Equals(potentialBase))
                         return true;
+
                     potentialDescendant = potentialDescendant.BaseType;
                 }
             }

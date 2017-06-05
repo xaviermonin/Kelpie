@@ -3,7 +3,7 @@
 namespace EntityCore.DynamicEntity.Construction.Materials
 {
     /// <summary>
-    /// Bind to an ICollection of an other type
+    /// Binds to an ICollection of an other type
     /// </summary>
     /// <typeparam name="TOutput">Destination</typeparam>
     /// <typeparam name="TInput">Source</typeparam>

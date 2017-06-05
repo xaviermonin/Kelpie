@@ -7,7 +7,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
     static class FieldHelper
     {
         /// <summary>
-        /// Create a private field
+        /// Creates a private field
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="fieldType"></param>

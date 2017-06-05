@@ -9,7 +9,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
     static class MethodHelper
     {
         /// <summary>
-        /// Create a getter method that return the given field
+        /// Creates a getter method that return the given field
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="attr"></param>
@@ -32,7 +32,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Create a setter method for property that assign the given field
+        /// Creates a setter method for property that assign the given field
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="attr"></param>
@@ -55,7 +55,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Create a getter method without body
+        /// Creates a getter method without body
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="attr"></param>
@@ -69,7 +69,7 @@ namespace EntityCore.DynamicEntity.Construction.Helper.Reflection
         }
 
         /// <summary>
-        /// Create a setter method without body
+        /// Creates a setter method without body
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="attr"></param>

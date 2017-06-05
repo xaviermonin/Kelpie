@@ -141,7 +141,7 @@ namespace EntityCore.DynamicEntity
         #endregion
 
         /// <summary>
-        /// Create a new instance of an entity
+        /// Creates a new instance of an entity
         /// from the given entity name.
         /// Note that this instance is NOT added or attached to the set.
         /// </summary>
@@ -153,7 +153,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Create a new instance of an entity
+        /// Creates a new instance of an entity
         /// casted to the given proxy type.
         /// Note that this instance is NOT added or attached to the set.
         /// </summary>
@@ -166,7 +166,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Create an entity record.
+        /// Creates an entity record.
         /// The entity name is got from
         /// the <see cref="BindedEntityAttribute"/> of the proxy type.
         /// Note that this instance is NOT added or attached to the set.
@@ -180,7 +180,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Create a new instance of an entity
+        /// Creates a new instance of an entity
         /// from the given entity name,
         /// set its state to Added and attach it to the set.
         /// </summary>
@@ -195,7 +195,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Create a new instance of an entity
+        /// Creates a new instance of an entity
         /// from the given entity name,
         /// set it state to Added and attach it to the set.
         /// </summary>
@@ -211,7 +211,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Create an entity record and
+        /// Creates an entity record and
         /// set it state to Added and attach it to the set.
         /// The entity name is got from
         /// the <see cref="BindedEntityAttribute"/> of the proxy type.
@@ -225,7 +225,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Return a non-generic <see cref="ProxyDbSet{TEntity}"/> instance
+        /// Returns a non-generic <see cref="ProxyDbSet{TEntity}"/> instance
         /// for access to entities of the given entity name.
         /// </summary>
         /// <param name="entityName"></param>
@@ -239,7 +239,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Return a <see cref="ProxyDbSet{TEntity}"/> instance
+        /// Returns a <see cref="ProxyDbSet{TEntity}"/> instance
         /// for access to entities via a proxy inherited from <see cref="IBaseEntity"/>.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -251,7 +251,7 @@ namespace EntityCore.DynamicEntity
         }
 
         /// <summary>
-        /// Return a <see cref="ProxyDbSet{TEntity}"/> instance
+        /// Returns a <see cref="ProxyDbSet{TEntity}"/> instance
         /// for access to entities via a proxy inherited from <see cref="IBaseEntity"/>.
         /// The entity name is got from
         /// the <see cref="BindedEntityAttribute"/> of the proxy type.
