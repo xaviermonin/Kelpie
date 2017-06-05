@@ -55,13 +55,12 @@ namespace UnitTest
                                                   .Single(attr => attr.ClrName == "System.String");
 
             IBaseEntity entity = entityContext.Create("Entity");
-            entity.SetAttributeValue("Name", "CreateWithManyToOneRelationship");
+            entity.SetAttributeValue("Name", nameof(CreateWithManyToOneRelationship));
 
             IBaseEntity attribute = entityContext.Create("Attribute");
-            attribute.SetAttributeValue("Name", "Attribute_CreateWithOneToManyRelationship");
-
-            throw new NotImplementedException("AddMemberToRelationship(RelationName, Member);");
-            //entity.AddMemberToRelationship("Attributes", attribute);
+            attribute.SetAttributeValue("Name", "Attribute_" + nameof(CreateWithManyToOneRelationship));
+            
+            entity.AddMemberToRelationship("Attributes", attribute);
 
             entityContext.Set("Entity").Add(entity);
 
