@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("ProtoLab")]
+[assembly: AssemblyTitle("Kelpie.Proxy")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Xavier Monin")]
-[assembly: AssemblyProduct("ProtoLab")]
+[assembly: AssemblyProduct("Kelpie")]
 [assembly: AssemblyCopyright("Copyright © Xavier Monin 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("99bbf31d-a6e0-45a6-b5bc-86fcbcf9e78a")]
+[assembly: Guid("3bfcbe8b-4e2c-4cb6-8830-a01c522d47ef")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

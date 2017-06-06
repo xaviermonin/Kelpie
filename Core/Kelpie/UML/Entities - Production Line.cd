@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Kelpie.DynamicEntity.Construction.Workshops.ProxyNavigationPropertyWorkshop" Collapsed="true">
+    <Position X="4.75" Y="2.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAADAAAAAAAAAAAIAAAAQCAABAEAg=</HashCode>
+      <FileName>DynamicEntity\Construction\Workshops\ProxyNavigationPropertyWorkshop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.Workshops.EntityInitializationWorkshop" Collapsed="true">
+    <Position X="7.75" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAACAAAAAAAAAAAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>DynamicEntity\Construction\Workshops\EntityInitializationWorkshop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.Workshops.EntityWorkshop&lt;TResult&gt;" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAQAAAAAIgEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DynamicEntity\Construction\Workshops\EntityWorkshop.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.Workshops.EntityWorkshopResult" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>DynamicEntity\Construction\Workshops\EntityWorkshopResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.Workshops.NavigationPropertyWorkshop" Collapsed="true">
+    <Position X="10.25" Y="2.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAACAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>DynamicEntity\Construction\Workshops\NavigationPropertyWorkshop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.Workshops.PropertyWorkshop" Collapsed="true">
+    <Position X="12.75" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAQAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAgQ=</HashCode>
+      <FileName>DynamicEntity\Construction\Workshops\PropertyWorkshop.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.EntityFactory" Collapsed="true">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAggABAAAAAAgCQAAAAAAAgAAAA=</HashCode>
+      <FileName>DynamicEntity\Construction\EntityFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Kelpie.DynamicEntity.Construction.Materials.BindingCollection&lt;TOutput, TInput&gt;" Collapsed="true">
+    <Position X="6.75" Y="4" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>ACIAAAAAAAAAABAQAEAABAQAAAAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>DynamicEntity\Construction\Materials\BindingCollection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
