@@ -1,5 +1,7 @@
 # Kelpie
 
+This library is experimental.
+
 ## Features
 
 - Entity Framework based and fully compatible (v6 only currently).
